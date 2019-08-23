@@ -39,7 +39,8 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated().and()
 				.addFilterBefore(new FiltroAutenticacionJWT(authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
-				.addFilterBefore(filtroAutorizacionJWTBean(), UsernamePasswordAuthenticationFilter.class);
+                .addFilterBefore(filtroAutorizacionJWTBean(), UsernamePasswordAuthenticationFilter.class)
+                .requiresChannel().requestMatchers(r->r.getHeaders("X-Forwarded-Proto")!=null).requiresSecure();
         // @formatter:on
     }
 
