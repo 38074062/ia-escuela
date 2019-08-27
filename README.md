@@ -20,7 +20,7 @@ o	Comedor: almuerzos, viandas media mañana, meriendas.
 
 **Configuración inicial del proyecto** 
 
-1. Ejecutar el archivo "create_schema.sql" de la carpeta "sql" (va a crear la base de datos y el usuario que se va a usar en la aplicación).
+1. Ejecutar los archivos "create_user.sql! y "create_schema.sql" de la carpeta "sql" (va a crear la base de datos y el usuario que se va a usar en la aplicación). (psql -U postgres -a -f "path/al/sql")
 
 2. Desde Eclipse y con el proyecto abierto, ir a "Run" -> "Run configurations". En el listado lateral, seleccionar "Maven Build" y agregar la configuración seleccionando "New configuration".
 

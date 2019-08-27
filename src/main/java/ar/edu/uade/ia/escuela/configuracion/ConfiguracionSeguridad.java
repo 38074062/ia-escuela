@@ -40,8 +40,8 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
 				.anyRequest().authenticated().and()
 				.addFilterBefore(new FiltroAutenticacionJWT(authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
-                .addFilterBefore(filtroAutorizacionJWTBean(), UsernamePasswordAuthenticationFilter.class)
-                .requiresChannel().requestMatchers(r->r.getHeaders("X-Forwarded-Proto")!=null).requiresSecure();
+                .addFilterBefore(filtroAutorizacionJWTBean(), UsernamePasswordAuthenticationFilter.class);
+                
         // @formatter:on
     }
 
@@ -53,6 +53,11 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    public FiltroRedireccion filtroRedireccion(){
+        return new FiltroRedireccion();
     }
 
     @Bean

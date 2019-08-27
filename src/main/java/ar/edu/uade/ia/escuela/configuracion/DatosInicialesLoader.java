@@ -20,9 +20,7 @@ import ar.edu.uade.ia.escuela.dominio.modelo.Rol;
 import ar.edu.uade.ia.escuela.dominio.modelo.Usuario;
 
 @Component
-public class DatosInicialesLoader
-    implements ApplicationListener<ContextRefreshedEvent>
-{
+public class DatosInicialesLoader implements ApplicationListener<ContextRefreshedEvent> {
     private Boolean configurado = false;
 
     @Autowired
@@ -38,53 +36,55 @@ public class DatosInicialesLoader
     private PasswordEncoder passwordEncoder;
 
     @Override
-    public void onApplicationEvent( ContextRefreshedEvent event )
-    {
-        if ( configurado )
-        {
+    public void onApplicationEvent(ContextRefreshedEvent event) {
+        if (configurado) {
             return;
         }
-        Privilegio privilegioLectura = crearPrivilegioSiNoExiste( "LECTURA" );
-        Privilegio privilegioEscritura = crearPrivilegioSiNoExiste( "ESCRITURA" );
-        List<Privilegio> privilegiosAdministrador = Arrays.asList( privilegioLectura, privilegioEscritura );
-        crearRolSiNoExiste( Cargo.ADMINISTRADOR.getRol(), privilegiosAdministrador );
-        crearRolSiNoExiste( Cargo.EMPLEADO.getRol(), Arrays.asList( privilegioEscritura, privilegioLectura ) );
-        crearRolSiNoExiste( Cargo.DOCENTE.getRol(), Arrays.asList( privilegioLectura ) );
-        Rol rolAdministrador = repositorioRol.findByRol( "ROLE_ADMINISTRADOR" ).get();
-        Usuario usuario = new Usuario();
-        usuario.setNombre( "Admin" );
-        usuario.setApellido( "Admin" );
-        usuario.setContrasenia( passwordEncoder.encode( "test" ) );
-        usuario.setNombreUsuario( "test@test.com" );
-        usuario.setRoles( Arrays.asList( rolAdministrador ) );
-        usuario.setCargo( Cargo.ADMINISTRADOR );
-        repositorioUsuario.save( usuario );
+        Privilegio privilegioLectura = crearPrivilegioSiNoExiste("LECTURA");
+        Privilegio privilegioEscritura = crearPrivilegioSiNoExiste("ESCRITURA");
+        List<Privilegio> privilegiosAdministrador = Arrays.asList(privilegioLectura, privilegioEscritura);
+        crearRolSiNoExiste(Cargo.ADMINISTRADOR.getRol(), privilegiosAdministrador);
+        crearRolSiNoExiste(Cargo.EMPLEADO.getRol(), Arrays.asList(privilegioEscritura, privilegioLectura));
+        crearRolSiNoExiste(Cargo.DOCENTE.getRol(), Arrays.asList(privilegioLectura));
+        crearUsuarioAdministradorSiNoExiste("test@test.com");
         configurado = true;
     }
 
     @Transactional
-    private Rol crearRolSiNoExiste( String nombre, List<Privilegio> privilegios )
-    {
-        Rol rol = repositorioRol.findByRol( nombre ).orElse( null );
-        if ( rol == null )
-        {
+    private void crearUsuarioAdministradorSiNoExiste(String nombreUsuario) {
+        Usuario usuario = repositorioUsuario.findByNombreUsuario(nombreUsuario);
+        if (usuario == null) {
+            usuario = new Usuario();
+            Rol rolAdministrador = repositorioRol.findByRol("ROLE_ADMINISTRADOR").get();
+            usuario.setNombre("Admin");
+            usuario.setApellido("Admin");
+            usuario.setContrasenia(passwordEncoder.encode("test"));
+            usuario.setNombreUsuario("test@test.com");
+            usuario.setRoles(Arrays.asList(rolAdministrador));
+            usuario.setCargo(Cargo.ADMINISTRADOR);
+            repositorioUsuario.save(usuario);
+        }
+    }
+
+    @Transactional
+    private Rol crearRolSiNoExiste(String nombre, List<Privilegio> privilegios) {
+        Rol rol = repositorioRol.findByRol(nombre).orElse(null);
+        if (rol == null) {
             rol = new Rol();
-            rol.setNombre( nombre );
-            rol.setPrivilegios( privilegios );
-            repositorioRol.save( rol );
+            rol.setNombre(nombre);
+            rol.setPrivilegios(privilegios);
+            repositorioRol.save(rol);
         }
         return rol;
     }
 
     @Transactional
-    private Privilegio crearPrivilegioSiNoExiste( String nombre )
-    {
-        Privilegio privilegio = repositorioPrivilegio.findByPrivilegio( nombre ).orElse( null );
-        if ( privilegio == null )
-        {
+    private Privilegio crearPrivilegioSiNoExiste(String nombre) {
+        Privilegio privilegio = repositorioPrivilegio.findByPrivilegio(nombre).orElse(null);
+        if (privilegio == null) {
             privilegio = new Privilegio();
-            privilegio.setNombre( nombre );
-            repositorioPrivilegio.save( privilegio );
+            privilegio.setNombre(nombre);
+            repositorioPrivilegio.save(privilegio);
         }
         return privilegio;
     }
