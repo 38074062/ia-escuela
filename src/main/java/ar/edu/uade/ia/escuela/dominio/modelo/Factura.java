@@ -2,7 +2,10 @@ package ar.edu.uade.ia.escuela.dominio.modelo;
 
 import java.sql.Date;
 import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Factura 
@@ -16,9 +19,8 @@ public class Factura
 	
 	private Date vencimiento;
 	
+	@ManyToOne
 	private Titular titular;
-	
-	private List<Inscripcion> inscripciones;
 	
 	public Factura()
 	{
@@ -32,7 +34,7 @@ public class Factura
 	
 	public void calcularTotal()
 	{
-		
+		titula
 	}
 	
 	public Date getFecha()
@@ -42,7 +44,7 @@ public class Factura
 	
 	public void setFecha(Date fecha)
 	{
-		fecha = fecha;
+		this.fecha = fecha;
 	}
 	
 	public Date getVencimiento()
@@ -57,7 +59,7 @@ public class Factura
 	
 	public void setTipo(String tipo)
 	{
-		tipo = tipo;
+		this.tipo = tipo;
 	}
 	public void setVencimiento(Date ven)
 	{

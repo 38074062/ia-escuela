@@ -1,6 +1,7 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
 
 
 @Entity
@@ -12,6 +13,9 @@ public class Alumno
 	private String nombre;
 	
 	private String apellido;
+	
+	@ManyToOne
+	private Titular titular;
 	
 	public Alumno()
 	{

@@ -1,18 +1,22 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
 import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Inscripcion 
 	extends EntidadBase
 {
-	private float cuota;
+	@OneToOne
+	private Titular titular;
 	
-	private float total;
+	@OneToOne
+	private Alumno alumno;
 	
-	private List<Alumno> alumnos;
-	
+	@OneToMany
 	private List<Servicio> servicios;
 	
 	public Inscripcion()
@@ -22,21 +26,18 @@ public class Inscripcion
 
 	public float getCuota()
 	{
+		float cuota;
+		cuota = calcularTotal()/12;
 		return cuota;
 	}
-	
-	public float getTotal()
+			
+	private float calcularTotal()
 	{
+		float total=0;
+		for(Servicio s:servicios)
+		{
+			total = total + s.getPrecio();
+		}
 		return total;
-	}
-	
-	public void calcularCuota()
-	{
-		
-	}
-	
-	public void calcularTotal()
-	{
-		
 	}
 }

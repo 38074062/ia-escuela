@@ -1,13 +1,17 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
 import java.util.List;
+
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 
 
 @Entity
 public class Titular 
-	extends EntidadBase{
-		
+	extends EntidadBase
+	{
+	
+
 		private Integer dni;
 	
 		private String nombre;
@@ -20,9 +24,13 @@ public class Titular
 
 	    private Integer cuentaBancaria;
 	    
-	    private List<Alumno> alumnos; 
+	    @OneToMany
+	    private List<Inscripcion> inscripciones; 
 	    
-	    
+	    @OneToMany
+	    private List<Factura> facturas;
+	   
+	        
 	    public Titular()
 	    {
 	    	super();
@@ -35,7 +43,7 @@ public class Titular
 	    
 	    public void setDni(Integer dni)
 	    {
-	    	dni = dni;
+	    	this.dni = dni;
 	    }
 	    
 	    public String getNombre()
@@ -87,4 +95,21 @@ public class Titular
 	    {
 	    	cuentaBancaria = cuen;
 	    }
+	    
+		
+		public List<Inscripcion> getInscripciones() {
+			return inscripciones;
+		}
+
+		public void setInscripciones(List<Inscripcion> inscripciones) {
+			this.inscripciones = inscripciones;
+		}
+
+		public List<Factura> getFacturas() {
+			return facturas;
+		}
+
+		public void setFacturas(List<Factura> facturas) {
+			this.facturas = facturas;
+		}
 }

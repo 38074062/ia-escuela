@@ -13,11 +13,6 @@ import javax.persistence.ManyToMany;
 @Entity
 public class Rol extends EntidadBase
 {
-
-    @Id
-    @GeneratedValue( strategy = GenerationType.AUTO )
-    private Long id;
-
     private String nombre;
 
     @ManyToMany( mappedBy = "roles" )
