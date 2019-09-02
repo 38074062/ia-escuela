@@ -34,7 +34,7 @@ public class Factura
 	
 	public void calcularTotal()
 	{
-		titula
+		
 	}
 	
 	public Date getFecha()

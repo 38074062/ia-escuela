@@ -14,6 +14,8 @@ public class Alumno
 	
 	private String apellido;
 	
+	private Integer dni;
+	
 	@ManyToOne
 	private Titular titular;
 	
@@ -27,7 +29,15 @@ public class Alumno
 	   	return legajo;
 	 }
 	 
-	 public void setLegajo(Integer leg)
+	 public Integer getDni() {
+		return dni;
+	}
+
+	public void setDni(Integer dni) {
+		this.dni = dni;
+	}
+
+	public void setLegajo(Integer leg)
 	 {
 		 legajo = leg;
 	 }

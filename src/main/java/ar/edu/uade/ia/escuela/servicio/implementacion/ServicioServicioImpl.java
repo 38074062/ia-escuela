@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioServicio;
+import ar.edu.uade.ia.escuela.dominio.modelo.Escolaridad;
 import ar.edu.uade.ia.escuela.dominio.modelo.Servicio;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
@@ -18,7 +19,7 @@ import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
 
 @Service
 @Transactional
-public class ServicioServicioImp
+public class ServicioServicioImpl
     implements ServicioServicio
 {
 
@@ -32,7 +33,7 @@ public class ServicioServicioImp
         {
             throw new NombreExistenteException();
         }
-        Servicio servicio = new Servicio();
+        Servicio servicio = new Escolaridad(); //aca falta poder elegir cual servicio primero
         servicio.setNombre( servicioDto.getNombre() );
         servicio.setTipo( servicioDto.getTipo() );
         servicio.setPrecio( servicioDto.getPrecio() );

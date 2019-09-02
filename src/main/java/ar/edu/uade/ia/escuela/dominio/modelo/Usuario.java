@@ -24,6 +24,8 @@ public class Usuario
     private String cuit;
 
     private Integer dni;
+    
+    private List<Recibo> recibos;
 
     @ManyToMany
     @JoinTable( name = "roles_usuarios", joinColumns = @JoinColumn( name = "id_usuario", referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "id_rol", referencedColumnName = "id" ) )
