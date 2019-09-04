@@ -9,5 +9,6 @@ public interface RepositorioAlumno
 {
 	@Query( "select e from #{#entityName} e where e.eliminado=false and e.legajo=?1" )
 	Alumno findByLegajo(Integer legajo);
+	Alumno findByDni(Integer dni); 
 }
 

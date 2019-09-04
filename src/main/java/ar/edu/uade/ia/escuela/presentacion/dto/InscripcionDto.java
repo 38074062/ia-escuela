@@ -48,4 +48,8 @@ public class InscripcionDto
 		return id;
 	}
 
+	public void setId(Long id) {
+		this.id = id;
+	}
+
 }
