@@ -1,11 +1,12 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
-
 
 @Entity
 public class Titular 

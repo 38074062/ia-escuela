@@ -8,6 +8,4 @@ import ar.edu.uade.ia.escuela.dominio.modelo.Titular;
 public interface RepositorioFactura 
 	extends RepositorioBase<Factura, Long>
 {
-	@Query( "select e from #{#entityName} e where e.eliminado=false and e.nombre=?1" )
-	Factura findById(Integer id);
 }

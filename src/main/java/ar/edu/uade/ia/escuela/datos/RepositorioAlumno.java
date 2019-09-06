@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import ar.edu.uade.ia.escuela.dominio.modelo.Alumno;
 
 public interface RepositorioAlumno
-	extends RepositorioBase<Alumno, Long>
+    extends RepositorioBase<Alumno, Long>
 {
-	@Query( "select e from #{#entityName} e where e.eliminado=false and e.legajo=?1" )
-	Alumno findByLegajo(Integer legajo);
-	Alumno findByDni(Integer dni); 
-}
+    @Query( "select e from #{#entityName} e where e.eliminado=false and e.legajo=?1" )
+    Alumno findByLegajo( Integer legajo );
 
+    @Query( "select e from #{#entityName} e where e.eliminado=false and e.dni=?1" )
+    Alumno findByDni( Integer dni );
+}
