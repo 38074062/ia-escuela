@@ -1,115 +1,136 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
-
 @Entity
-public class Titular 
-	extends EntidadBase
-	{
-	
+public class Titular
+    extends EntidadBase
+{
 
-		private Integer dni;
-	
-		private String nombre;
-	
-		private String apellido;
+    private Integer dni;
 
-	    private String direccion;
+    private String nombre;
 
-	    private String email;
+    private String apellido;
 
-	    private Integer cuentaBancaria;
-	    
-	    @OneToMany
-	    private List<Inscripcion> inscripciones; 
-	    
-	    @OneToMany
-	    private List<Factura> facturas;
-	   
-	        
-	    public Titular()
-	    {
-	    	super();
-	    }
-	    
-	    public Integer getDni()
-	    {
-	    	return dni;
-	    }
-	    
-	    public void setDni(Integer dni)
-	    {
-	    	this.dni = dni;
-	    }
-	    
-	    public String getNombre()
-	    {
-	    	return nombre;
-	    }
+    private String direccion;
 
-	    public void setNombre(String nom)
-	    {
-	    	nombre = nom;
-	    }
-	    
-	    public String getApellido()
-	    {
-	    	return apellido;
-	    }
+    private String email;
 
-	    public void setApellido(String ape)
-	    {
-	    	apellido = ape;
-	    }	    
-	    
-	    public String getDireccion()
-	    {
-	    	return direccion;
-	    }
+    private Integer cuentaBancaria;
 
-	    public void setDireccion(String dir)
-	    {
-	    	direccion = dir;
-	    }
-	    
-	    public String getEmail()
-	    {
-	    	return email;
-	    }
+    @OneToMany
+    private List<Inscripcion> inscripciones;
 
-	    public void setEmail(String mail)
-	    {
-	    	email = mail;
-	    }
-	    
-	    public Integer getCuentaBancaria()
-	    {
-	    	return cuentaBancaria;
-	    }
+    @OneToMany
+    private List<Factura> facturas;
+    
+    private String tipoFacturacion;
 
-	    public void setCuentaBancaria(Integer cuen)
-	    {
-	    	cuentaBancaria = cuen;
-	    }
-	    
-		
-		public List<Inscripcion> getInscripciones() {
-			return inscripciones;
-		}
+    public Titular()
+    {
+        super();
+    }
 
-		public void setInscripciones(List<Inscripcion> inscripciones) {
-			this.inscripciones = inscripciones;
-		}
+    public Integer getDni()
+    {
+        return dni;
+    }
 
-		public List<Factura> getFacturas() {
-			return facturas;
-		}
+    public void setDni( Integer dni )
+    {
+        this.dni = dni;
+    }
 
-		public void setFacturas(List<Factura> facturas) {
-			this.facturas = facturas;
-		}
+    public String getNombre()
+    {
+        return nombre;
+    }
+
+    public void setNombre( String nom )
+    {
+        nombre = nom;
+    }
+
+    public String getApellido()
+    {
+        return apellido;
+    }
+
+    public void setApellido( String ape )
+    {
+        apellido = ape;
+    }
+
+    public String getDireccion()
+    {
+        return direccion;
+    }
+
+    public void setDireccion( String dir )
+    {
+        direccion = dir;
+    }
+
+    public String getEmail()
+    {
+        return email;
+    }
+
+    public void setEmail( String mail )
+    {
+        email = mail;
+    }
+
+    public Integer getCuentaBancaria()
+    {
+        return cuentaBancaria;
+    }
+
+    public void setCuentaBancaria( Integer cuen )
+    {
+        cuentaBancaria = cuen;
+    }
+
+    public List<Inscripcion> getInscripciones()
+    {
+        return inscripciones;
+    }
+
+    public void setInscripciones( List<Inscripcion> inscripciones )
+    {
+        this.inscripciones = inscripciones;
+    }
+
+    public List<Factura> getFacturas()
+    {
+        return facturas;
+    }
+
+    public void setFacturas( List<Factura> facturas )
+    {
+        this.facturas = facturas;
+    }
+
+    public List<Inscripcion> getInscripcionesActivas()
+    {
+        return this.inscripciones.stream().filter( inscripcion -> inscripcion.estaActiva() ).collect( Collectors.toList() );
+    }
+
+    public String getTipoFacturacion()
+    {
+        return tipoFacturacion;
+    }
+
+    public void setTipoFacturacion( String tipoFacturacion )
+    {
+        this.tipoFacturacion = tipoFacturacion;
+    }
+    
+    
 }
