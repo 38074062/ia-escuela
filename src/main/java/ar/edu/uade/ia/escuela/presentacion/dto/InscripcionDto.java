@@ -47,6 +47,31 @@ public class InscripcionDto
 	public Long getId(){
 		return id;
 	}
+	
+
+	public Titular getTitular() {
+		return titular;
+	}
+
+	public void setTitular(Titular titular) {
+		this.titular = titular;
+	}
+
+	public Alumno getAlumno() {
+		return alumno;
+	}
+
+	public void setAlumno(Alumno alumno) {
+		this.alumno = alumno;
+	}
+
+	public List<Servicio> getServicios() {
+		return servicios;
+	}
+
+	public void setServicios(List<Servicio> servicios) {
+		this.servicios = servicios;
+	}
 
 	public void setId(Long id) {
 		this.id = id;

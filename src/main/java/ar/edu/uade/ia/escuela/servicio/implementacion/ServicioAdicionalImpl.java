@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import ar.edu.uade.ia.escuela.datos.RepositorioServicio;
 import ar.edu.uade.ia.escuela.dominio.modelo.Escolaridad;
 import ar.edu.uade.ia.escuela.dominio.modelo.Servicio;
+import ar.edu.uade.ia.escuela.presentacion.dto.AdicionalDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontrada;
@@ -19,7 +20,7 @@ import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
 
 @Service
 @Transactional
-public class ServicioServicioImpl
+public class ServicioAdicionalImpl
     implements ServicioServicio
 {
 
@@ -33,7 +34,7 @@ public class ServicioServicioImpl
         {
             throw new NombreExistenteException();
         }
-        Servicio servicio = new Escolaridad(); //aca falta poder elegir cual servicio primero
+        Servicio servicio = new Escolaridad();
         servicio.setNombre( servicioDto.getNombre() );
         servicio.setTipo( servicioDto.getTipo() );
         servicio.setPrecio( servicioDto.getPrecio() );
@@ -70,7 +71,7 @@ public class ServicioServicioImpl
 		List<ServicioDto> servicioDto = new ArrayList<ServicioDto>();
 		for(Servicio s:servicios)
 		{
-			ServicioDto sg= new ServicioDto();
+			AdicionalDto sg= new AdicionalDto();
 			sg.setId(s.getId());
 		    sg.setNombre( s.getNombre() );
 		    sg.setTipo( s.getTipo() );
@@ -79,6 +80,5 @@ public class ServicioServicioImpl
 		}
 		return servicioDto;
 	}
-    
-    
 }
+    

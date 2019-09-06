@@ -1,6 +1,8 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
 
 
@@ -8,7 +10,7 @@ import javax.persistence.ManyToOne;
 public class Alumno 
 	extends EntidadBase
 {
-	private Integer legajo;
+	@GeneratedValue(strategy= GenerationType.IDENTITY) private  Integer legajo;
 	
 	private String nombre;
 	

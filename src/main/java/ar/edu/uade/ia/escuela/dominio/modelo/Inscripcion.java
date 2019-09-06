@@ -40,4 +40,29 @@ public class Inscripcion
 		}
 		return total;
 	}
+
+	public Titular getTitular() {
+		return titular;
+	}
+
+	public void setTitular(Titular titular) {
+		this.titular = titular;
+	}
+
+	public Alumno getAlumno() {
+		return alumno;
+	}
+
+	public void setAlumno(Alumno alumno) {
+		this.alumno = alumno;
+	}
+
+	public List<Servicio> getServicios() {
+		return servicios;
+	}
+
+	public void setServicios(List<Servicio> servicios) {
+		this.servicios = servicios;
+	}
+	
 }

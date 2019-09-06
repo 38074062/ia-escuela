@@ -1,5 +1,7 @@
 package ar.edu.uade.ia.escuela.presentacion.dto;
 
+import java.util.List;
+
 public class RegistroUsuarioDto
 {
 
@@ -17,12 +19,22 @@ public class RegistroUsuarioDto
 
     private Integer cargo;
 
+    private List<ReciboDto> recibos;
+    
     public RegistroUsuarioDto()
     {
 
     }
 
-    public String getNombre()
+    public List<ReciboDto> getRecibos() {
+		return recibos;
+	}
+
+	public void setRecibos(List<ReciboDto> recibos) {
+		this.recibos = recibos;
+	}
+
+	public String getNombre()
     {
         return nombre;
     }

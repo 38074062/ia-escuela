@@ -1,6 +1,6 @@
 package ar.edu.uade.ia.escuela.presentacion.dto;
 
-public class ServicioDto
+public abstract class ServicioDto
 {
 	 private Long id; 
 	 

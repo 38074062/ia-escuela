@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
+
+import ar.edu.uade.ia.escuela.presentacion.dto.ReciboDto;
+
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
 
@@ -44,7 +47,24 @@ public class Usuario
         return nombre;
     }
 
-    public void setNombre( String nombre )
+    public List<Recibo> getRecibos() {
+		return recibos;
+	}
+
+	public void setRecibos(List<ReciboDto> list) {
+		for(ReciboDto r:list)
+		{
+			Recibo reciboActual = new Recibo();
+			reciboActual.setHaber(r.getHaber());
+			reciboActual.setHorario(r.getHorario());
+			reciboActual.setHoras(r.getHoras());
+			reciboActual.setPrecio(r.getPrecio());
+			reciboActual.setDescuento(r.getDescuento());
+			recibos.add(reciboActual);
+		}
+	}
+
+	public void setNombre( String nombre )
     {
         this.nombre = nombre;
     }

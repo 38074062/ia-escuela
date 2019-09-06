@@ -4,14 +4,13 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 
 @Entity
 public class Titular 
 	extends EntidadBase
 	{
-	
-
 		private Integer dni;
 	
 		private String nombre;
@@ -29,6 +28,9 @@ public class Titular
 	    
 	    @OneToMany
 	    private List<Factura> facturas;
+	    
+	    @OneToOne
+	    private CuentaCorriente cuentaCorriente;
 	   
 	        
 	    public Titular()

@@ -5,9 +5,12 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioFactura;
+import ar.edu.uade.ia.escuela.datos.RepositorioInscripcion;
+import ar.edu.uade.ia.escuela.datos.RepositorioTitular;
 import ar.edu.uade.ia.escuela.dominio.modelo.Factura;
 import ar.edu.uade.ia.escuela.presentacion.dto.FacturaDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioFactura;
@@ -18,15 +21,25 @@ public class ServicioFacturaImpl
 	implements ServicioFactura
 {
 
+	
+	@Autowired
+	RepositorioTitular repositorioTitular;
+	@Autowired
+	RepositorioInscripcion repositorioInscripcion;
+	@Autowired
+	private RepositorioFactura repositorio;
+	
 	@Override
-	public void generarFactura(FacturaDto facturaDto) {
+	public void generarFactura(FacturaDto facturaDto, Integer dni) {
+		
+		
 		
 		
 	}
 
 	@Override
 	public List<FacturaDto> listarFacturas() {
-		List<Factura> facturas = 	RepositorioFactura.findAll();
+		List<Factura> facturas = repositorio.findAll();
 		List<FacturaDto> facturaDto = new ArrayList<FacturaDto>();
 		for(Factura s:facturas)
 		{
