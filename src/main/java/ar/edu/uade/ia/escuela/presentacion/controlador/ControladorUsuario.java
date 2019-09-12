@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
@@ -25,12 +24,6 @@ public class ControladorUsuario
     @Autowired
     private ServicioUsuario servicioUsuario;
 
-    @GetMapping("/")
-    @ResponseBody
-    public String home(){
-        return "Hola!";
-    }
-
     @GetMapping( "/cargos" )
     public RespuestaApiDto<List<CargoDto>> getCargos()
     {
@@ -40,8 +33,8 @@ public class ControladorUsuario
         return respuesta;
     }
 
-    @PostMapping( "/registrarse" )
-    public RespuestaApiDto<Object> registrarUsuario( @RequestBody RegistroUsuarioDto usuario )
+    @PostMapping( "/empleados" )
+    public RespuestaApiDto<Object> altaEmpleado( @RequestBody RegistroUsuarioDto usuario )
     {
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try

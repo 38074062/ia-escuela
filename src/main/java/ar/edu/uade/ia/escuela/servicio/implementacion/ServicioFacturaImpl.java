@@ -12,9 +12,9 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioFactura;
 import ar.edu.uade.ia.escuela.datos.RepositorioTitular;
-import ar.edu.uade.ia.escuela.dominio.modelo.Factura;
-import ar.edu.uade.ia.escuela.dominio.modelo.Titular;
-import ar.edu.uade.ia.escuela.dominio.modelo.Inscripcion;
+import ar.edu.uade.ia.escuela.dominio.modelo.facturacion.Factura;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 import ar.edu.uade.ia.escuela.presentacion.dto.FacturaDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioFactura;
 

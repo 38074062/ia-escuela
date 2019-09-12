@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioServicio;
-import ar.edu.uade.ia.escuela.dominio.modelo.Adicional;
-import ar.edu.uade.ia.escuela.dominio.modelo.Comedor;
-import ar.edu.uade.ia.escuela.dominio.modelo.Escolaridad;
-import ar.edu.uade.ia.escuela.dominio.modelo.Servicio;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Adicional;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Comedor;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Escolaridad;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
 import ar.edu.uade.ia.escuela.presentacion.dto.AdicionalDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;

@@ -1,4 +1,4 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
 import javax.persistence.Entity;
 

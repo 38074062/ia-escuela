@@ -1,14 +1,16 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.empleados;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
-import ar.edu.uade.ia.escuela.presentacion.dto.ReciboDto;
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 import javax.persistence.JoinTable;
 import javax.persistence.JoinColumn;
@@ -29,7 +31,7 @@ public class Usuario
 
     private Integer dni;
 
-    @OneToMany( mappedBy = "usuario" )
+    @OneToMany( mappedBy = "usuario", cascade = CascadeType.ALL )
     private List<Recibo> recibos;
 
     @ManyToMany
@@ -54,18 +56,22 @@ public class Usuario
         return recibos;
     }
 
-    public void setRecibos( List<ReciboDto> list )
+    public void setRecibos( List<Recibo> recibos )
     {
-        for ( ReciboDto r : list )
+        if ( recibos != null )
         {
-            Recibo reciboActual = new Recibo();
-            reciboActual.setHaber( r.getHaber() );
-            reciboActual.setHorario( r.getHorario() );
-            reciboActual.setHoras( r.getHoras() );
-            reciboActual.setPrecio( r.getPrecio() );
-            reciboActual.setDescuento( r.getDescuento() );
-            recibos.add( reciboActual );
+            recibos.forEach( this::agregarRecibo );
         }
+    }
+
+    public void agregarRecibo( Recibo recibo )
+    {
+        if ( this.recibos == null )
+        {
+            this.recibos = new LinkedList<>();
+        }
+        recibo.setUsuario( this );
+        this.recibos.add( recibo );
     }
 
     public void setNombre( String nombre )

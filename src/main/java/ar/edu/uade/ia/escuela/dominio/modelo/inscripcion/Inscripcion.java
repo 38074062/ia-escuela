@@ -1,12 +1,15 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 @Entity
 public class Inscripcion
@@ -18,7 +21,8 @@ public class Inscripcion
     @OneToOne
     private Alumno alumno;
 
-    @OneToMany
+    @ManyToMany
+    @JoinTable( name = "servicios_inscripcion", joinColumns = @JoinColumn( name = "id_inscripcion", referencedColumnName = "id" ), inverseJoinColumns = @JoinColumn( name = "id_servicio", referencedColumnName = "id" ) )
     private List<Servicio> servicios;
 
     private Boolean activo;
@@ -86,9 +90,4 @@ public class Inscripcion
         this.activo = activo;
     }
 
-    public Factura generarFacturaFecha( LocalDate now )
-    {
-        // TODO Auto-generated method stub
-        return null;
-    }
 }

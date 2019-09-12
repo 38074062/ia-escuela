@@ -5,7 +5,7 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
-import ar.edu.uade.ia.escuela.dominio.modelo.Rol;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Rol;
 
 @Repository
 public interface RepositorioRol

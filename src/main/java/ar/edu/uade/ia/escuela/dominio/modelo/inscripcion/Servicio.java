@@ -1,8 +1,10 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 @Inheritance(strategy = InheritanceType.JOINED)
 @Entity

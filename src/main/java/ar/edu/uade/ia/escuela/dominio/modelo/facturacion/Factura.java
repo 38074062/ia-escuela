@@ -1,12 +1,17 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 
 @Entity
 public class Factura
@@ -21,7 +26,7 @@ public class Factura
     @OneToOne
     private Titular titular;
 
-    @OneToMany( mappedBy = "factura" )
+    @OneToMany( mappedBy = "factura", cascade = CascadeType.ALL )
     private List<ItemFactura> items = new LinkedList<>();
 
     public Factura()

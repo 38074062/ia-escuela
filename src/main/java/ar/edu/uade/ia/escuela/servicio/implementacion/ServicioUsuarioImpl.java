@@ -18,10 +18,10 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioRol;
 import ar.edu.uade.ia.escuela.datos.RepositorioUsuario;
-import ar.edu.uade.ia.escuela.dominio.modelo.Cargo;
-import ar.edu.uade.ia.escuela.dominio.modelo.Privilegio;
-import ar.edu.uade.ia.escuela.dominio.modelo.Rol;
-import ar.edu.uade.ia.escuela.dominio.modelo.Usuario;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Cargo;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Privilegio;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Rol;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Usuario;
 import ar.edu.uade.ia.escuela.presentacion.dto.CargoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RegistroUsuarioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
@@ -34,6 +34,7 @@ import ar.edu.uade.ia.escuela.servicio.error.NombreDeUsuarioExistenteException;
 public class ServicioUsuarioImpl
     implements ServicioUsuario
 {
+    private static final String DEFAULT_PASSWORD = "1234";
 
     @Autowired
     private RepositorioUsuario repositorioUsuario;
@@ -111,11 +112,10 @@ public class ServicioUsuarioImpl
         usuario.setNombre( usuarioDto.getNombre() );
         usuario.setApellido( usuarioDto.getApellido() );
         usuario.setNombreUsuario( usuarioDto.getNombreUsuario() );
-        usuario.setContrasenia( passwordEncoder.encode( usuarioDto.getContrasenia() ) );
+        usuario.setContrasenia( passwordEncoder.encode( DEFAULT_PASSWORD ) );
         usuario.setDni( usuarioDto.getDni() );
         usuario.setCuit( usuarioDto.getCuit() );
         usuario.setRoles( establecerRolSegunCargo( usuario.getCargo() ) );
-        usuario.setRecibos( usuarioDto.getRecibos() );
         repositorioUsuario.save( usuario );
     }
 

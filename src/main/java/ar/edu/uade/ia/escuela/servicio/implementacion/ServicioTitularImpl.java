@@ -10,8 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioTitular;
-import ar.edu.uade.ia.escuela.dominio.modelo.CuentaCorriente;
-import ar.edu.uade.ia.escuela.dominio.modelo.Titular;
+import ar.edu.uade.ia.escuela.dominio.modelo.facturacion.CuentaCorriente;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;

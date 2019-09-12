@@ -1,11 +1,16 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
 
 @Entity
 public class ItemFactura
@@ -18,7 +23,7 @@ public class ItemFactura
     @OneToOne
     private Inscripcion inscripcion;
 
-    @OneToMany( mappedBy = "itemFactura" )
+    @OneToMany( mappedBy = "itemFactura",cascade = CascadeType.ALL )
     private List<ServicioFacturado> serviciosFacturados;
 
     public Factura getFactura()
@@ -48,7 +53,20 @@ public class ItemFactura
 
     public void setServiciosFacturados( List<ServicioFacturado> serviciosFacturados )
     {
-        this.serviciosFacturados = serviciosFacturados;
+        if ( serviciosFacturados != null )
+        {
+            serviciosFacturados.forEach( this::agregarServicioFacturado );
+        }
+    }
+
+    public void agregarServicioFacturado( ServicioFacturado servicioFacturado )
+    {
+        if ( this.serviciosFacturados == null )
+        {
+            this.serviciosFacturados = new LinkedList<>();
+        }
+        servicioFacturado.setItemFactura( this );
+        this.serviciosFacturados.add( servicioFacturado );
     }
 
     public float getSubTotal()

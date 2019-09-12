@@ -5,9 +5,9 @@ import java.util.List;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
-import ar.edu.uade.ia.escuela.dominio.modelo.Alumno;
-import ar.edu.uade.ia.escuela.dominio.modelo.Servicio;
-import ar.edu.uade.ia.escuela.dominio.modelo.Titular;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 
 public class InscripcionDto 
 {

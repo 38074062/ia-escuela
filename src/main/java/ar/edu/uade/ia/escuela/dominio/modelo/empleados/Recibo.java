@@ -1,7 +1,9 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.empleados;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 @Entity
 public class Recibo

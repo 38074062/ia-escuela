@@ -1,7 +1,5 @@
 package ar.edu.uade.ia.escuela.presentacion.dto;
 
-import java.util.List;
-
 public class RegistroUsuarioDto
 {
 
@@ -11,28 +9,16 @@ public class RegistroUsuarioDto
 
     private String nombreUsuario;
 
-    private String contrasenia;
-
     private String cuit;
 
     private Integer dni;
 
     private Integer cargo;
-
-    private List<ReciboDto> recibos;
     
     public RegistroUsuarioDto()
     {
 
     }
-
-    public List<ReciboDto> getRecibos() {
-		return recibos;
-	}
-
-	public void setRecibos(List<ReciboDto> recibos) {
-		this.recibos = recibos;
-	}
 
 	public String getNombre()
     {
@@ -62,16 +48,6 @@ public class RegistroUsuarioDto
     public void setNombreUsuario( String nombreUsuario )
     {
         this.nombreUsuario = nombreUsuario;
-    }
-
-    public String getContrasenia()
-    {
-        return contrasenia;
-    }
-
-    public void setContrasenia( String contrasenia )
-    {
-        this.contrasenia = contrasenia;
     }
 
     public String getCuit()

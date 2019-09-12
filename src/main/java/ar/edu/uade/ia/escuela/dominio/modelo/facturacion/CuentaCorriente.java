@@ -1,19 +1,23 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 @Entity
 public class CuentaCorriente
     extends EntidadBase
 {
 
-    @OneToMany( mappedBy = "cuentaCorriente" )
+    @OneToMany( mappedBy = "cuentaCorriente", cascade = CascadeType.ALL )
     private List<ItemCuenta> itemsCuentas;
 
-    private Integer cuentaBancaria;
+    private String cuentaBancaria;
 
     public CuentaCorriente()
     {
@@ -27,15 +31,28 @@ public class CuentaCorriente
 
     public void setItemsCuentas( List<ItemCuenta> itemsCuentas )
     {
-        this.itemsCuentas = itemsCuentas;
+        if ( itemsCuentas != null )
+        {
+            itemsCuentas.forEach( this::agregarItem );
+        }
     }
 
-    public Integer getCuentaBancaria()
+    public void agregarItem( ItemCuenta item )
+    {
+        if ( this.itemsCuentas == null )
+        {
+            this.itemsCuentas = new LinkedList<>();
+        }
+        item.setCuentaCorriente( this );
+        this.itemsCuentas.add( item );
+    }
+
+    public String getCuentaBancaria()
     {
         return cuentaBancaria;
     }
 
-    public void setCuentaBancaria( Integer cuentaBancaria )
+    public void setCuentaBancaria( String cuentaBancaria )
     {
         this.cuentaBancaria = cuentaBancaria;
     }

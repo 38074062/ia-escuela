@@ -1,9 +1,11 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.ManyToOne;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 
 @Entity

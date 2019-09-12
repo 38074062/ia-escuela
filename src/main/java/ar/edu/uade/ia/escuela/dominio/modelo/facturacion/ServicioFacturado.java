@@ -1,8 +1,11 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
 
 @Entity
 public class ServicioFacturado

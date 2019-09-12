@@ -1,4 +1,4 @@
-package ar.edu.uade.ia.escuela.dominio.modelo;
+package ar.edu.uade.ia.escuela.dominio.modelo.empleados;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+
+import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 @Entity
 public class Rol extends EntidadBase

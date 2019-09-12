@@ -14,10 +14,10 @@ import org.springframework.stereotype.Component;
 import ar.edu.uade.ia.escuela.datos.RepositorioPrivilegio;
 import ar.edu.uade.ia.escuela.datos.RepositorioRol;
 import ar.edu.uade.ia.escuela.datos.RepositorioUsuario;
-import ar.edu.uade.ia.escuela.dominio.modelo.Cargo;
-import ar.edu.uade.ia.escuela.dominio.modelo.Privilegio;
-import ar.edu.uade.ia.escuela.dominio.modelo.Rol;
-import ar.edu.uade.ia.escuela.dominio.modelo.Usuario;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Cargo;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Privilegio;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Rol;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Usuario;
 
 @Component
 public class DatosInicialesLoader implements ApplicationListener<ContextRefreshedEvent> {

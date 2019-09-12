@@ -2,7 +2,7 @@ package ar.edu.uade.ia.escuela.datos;
 
 import org.springframework.data.jpa.repository.Query;
 
-import ar.edu.uade.ia.escuela.dominio.modelo.Alumno;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
 
 public interface RepositorioAlumno
     extends RepositorioBase<Alumno, Long>
