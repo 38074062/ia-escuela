@@ -19,7 +19,7 @@ import ar.edu.uade.ia.escuela.dominio.modelo.Titular;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
-import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontrada;
+import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 
 
 @Service
@@ -65,7 +65,7 @@ public class ServicioInscripcionImpl
 		Optional<Inscripcion> inscripcion = repositorioInscripcion.findById(inscripcionDto.getId());
 		if ( !inscripcion.isPresent())
         {
-            throw new EntidadNoEncontrada("La inscripcion no existe");
+            throw new EntidadNoEncontradaException("La inscripcion no existe");
         }
 		Inscripcion inscripcionActual = inscripcion.get();
 		inscripcionActual.setServicios(servicios);	

@@ -20,7 +20,6 @@ import ar.edu.uade.ia.escuela.datos.RepositorioRol;
 import ar.edu.uade.ia.escuela.datos.RepositorioUsuario;
 import ar.edu.uade.ia.escuela.dominio.modelo.Cargo;
 import ar.edu.uade.ia.escuela.dominio.modelo.Privilegio;
-import ar.edu.uade.ia.escuela.dominio.modelo.Recibo;
 import ar.edu.uade.ia.escuela.dominio.modelo.Rol;
 import ar.edu.uade.ia.escuela.dominio.modelo.Usuario;
 import ar.edu.uade.ia.escuela.presentacion.dto.CargoDto;
@@ -116,7 +115,7 @@ public class ServicioUsuarioImpl
         usuario.setDni( usuarioDto.getDni() );
         usuario.setCuit( usuarioDto.getCuit() );
         usuario.setRoles( establecerRolSegunCargo( usuario.getCargo() ) );
-        usuario.setRecibos(usuarioDto.getRecibos());
+        usuario.setRecibos( usuarioDto.getRecibos() );
         repositorioUsuario.save( usuario );
     }
 

@@ -17,7 +17,7 @@ import ar.edu.uade.ia.escuela.dominio.modelo.Servicio;
 import ar.edu.uade.ia.escuela.presentacion.dto.AdicionalDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
-import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontrada;
+import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
 
 @Service
@@ -34,7 +34,7 @@ public class ServicioServicioImpl
     {
         if ( !repositorioServicio.findById( id ).isPresent() )
         {
-            throw new EntidadNoEncontrada( "El servicio no existe" );
+            throw new EntidadNoEncontradaException( "El servicio no existe" );
         }
         repositorioServicio.deleteById( id );
     }
@@ -45,7 +45,7 @@ public class ServicioServicioImpl
         Optional<Servicio> servicio = repositorioServicio.findById( servicioDto.getId() );
         if ( !servicio.isPresent() )
         {
-            throw new EntidadNoEncontrada( "El servicio no existe" );
+            throw new EntidadNoEncontradaException( "El servicio no existe" );
         }
         Servicio servicioGuardado = servicio.get();
         servicioGuardado.setNombre( servicioDto.getNombre() );

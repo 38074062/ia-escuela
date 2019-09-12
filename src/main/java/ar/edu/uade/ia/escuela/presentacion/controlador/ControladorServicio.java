@@ -12,10 +12,13 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
+import ar.edu.uade.ia.escuela.presentacion.dto.AdicionalDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.ComedorDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.EscolaridadDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
-import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontrada;
+import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
 
 @RestController
@@ -25,8 +28,8 @@ public class ControladorServicio
     @Autowired
     private ServicioServicio servicioServicio;
 
-    @PostMapping( "/servicios" )
-    public RespuestaApiDto<Object> altaServicio( @RequestBody ServicioDto servicio )
+    @PostMapping( "/servicios/escolaridad" )
+    public RespuestaApiDto<Object> altaServicioEscolaridad( @RequestBody EscolaridadDto servicio )
     {
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try
@@ -35,58 +38,94 @@ public class ControladorServicio
             respuesta.setEstado( true );
             respuesta.setMensaje( MensajePresentacion.SERVICIO_CREADO.getDescripcion() );
         }
-        catch ( NombreExistenteException e)
+        catch ( NombreExistenteException e )
         {
             respuesta.setEstado( false );
             respuesta.setMensaje( e.getMessage() );
         }
         return respuesta;
     }
-    
-    @DeleteMapping("/servicios/{id}")
-    public RespuestaApiDto<Object> bajaServicio(@PathVariable(name = "id")Long id)
+
+    @PostMapping( "/servicios/comedor" )
+    public RespuestaApiDto<Object> altaServicioComedor( @RequestBody ComedorDto servicio )
     {
-    	 RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
-         try
-         {
-        	 servicioServicio.bajaServicio(id);
-        	 respuesta.setEstado( true );
-             respuesta.setMensaje( MensajePresentacion.SERVICIO_BORRADO.getDescripcion() );
-        	 
-         }
-         catch(EntidadNoEncontrada e)
-         {
-        	 respuesta.setEstado( false );
-             respuesta.setMensaje( e.getMessage() );
-         }
-         return respuesta;
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
+        try
+        {
+            servicioServicio.altaComedor( servicio );
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.SERVICIO_CREADO.getDescripcion() );
+        }
+        catch ( NombreExistenteException e )
+        {
+            respuesta.setEstado( false );
+            respuesta.setMensaje( e.getMessage() );
+        }
+        return respuesta;
     }
 
-    @PutMapping("/servicios")
-    public RespuestaApiDto<Object> modificarServicio(@RequestBody ServicioDto servicio)
+    @PostMapping( "/servicios/adicional" )
+    public RespuestaApiDto<Object> altaServicioAdicional( @RequestBody AdicionalDto servicio )
     {
-    	RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
+        try
+        {
+            servicioServicio.altaEscolaridad( servicio );
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.SERVICIO_CREADO.getDescripcion() );
+        }
+        catch ( NombreExistenteException e )
+        {
+            respuesta.setEstado( false );
+            respuesta.setMensaje( e.getMessage() );
+        }
+        return respuesta;
+    }
+
+    @DeleteMapping( "/servicios/{id}" )
+    public RespuestaApiDto<Object> bajaServicio( @PathVariable( name = "id" ) Long id )
+    {
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
+        try
+        {
+            servicioServicio.bajaServicio( id );
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.SERVICIO_BORRADO.getDescripcion() );
+
+        }
+        catch ( EntidadNoEncontradaException e )
+        {
+            respuesta.setEstado( false );
+            respuesta.setMensaje( e.getMessage() );
+        }
+        return respuesta;
+    }
+
+    @PutMapping( "/servicios" )
+    public RespuestaApiDto<Object> modificarServicio( @RequestBody ServicioDto servicio )
+    {
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try
         {
             servicioServicio.modificarServicio( servicio );
             respuesta.setEstado( true );
             respuesta.setMensaje( MensajePresentacion.SERVICIO_MODIFICADO.getDescripcion() );
         }
-        catch (EntidadNoEncontrada e)
+        catch ( EntidadNoEncontradaException e )
         {
             respuesta.setEstado( false );
             respuesta.setMensaje( e.getMessage() );
         }
         return respuesta;
     }
-    
-    @GetMapping("/servicios")
+
+    @GetMapping( "/servicios" )
     public RespuestaApiDto<List<ServicioDto>> listarServicios()
     {
-    	RespuestaApiDto<List<ServicioDto>> respuesta = new RespuestaApiDto<List<ServicioDto>>();
-    	respuesta.setDatos(servicioServicio.listarServicios());
-    	respuesta.setEstado(true);
-    	return respuesta;
+        RespuestaApiDto<List<ServicioDto>> respuesta = new RespuestaApiDto<List<ServicioDto>>();
+        respuesta.setDatos( servicioServicio.listarServicios() );
+        respuesta.setEstado( true );
+        return respuesta;
     }
-    
+
 }

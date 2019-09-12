@@ -14,7 +14,7 @@ import ar.edu.uade.ia.escuela.dominio.modelo.CuentaCorriente;
 import ar.edu.uade.ia.escuela.dominio.modelo.Titular;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
-import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontrada;
+import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
 
 @Service
@@ -50,7 +50,7 @@ public class ServicioTitularImpl
     {
         if ( !repositorioTitular.findById( id ).isPresent() )
         {
-            throw new EntidadNoEncontrada( "El titular no existe" );
+            throw new EntidadNoEncontradaException( "El titular no existe" );
         }
         repositorioTitular.deleteById( id );
     }
@@ -61,7 +61,7 @@ public class ServicioTitularImpl
         Optional<Titular> titular = repositorioTitular.findByDni( titularDto.getDni() );
         if ( !titular.isPresent() )
         {
-            throw new EntidadNoEncontrada( "El titular no existe" );
+            throw new EntidadNoEncontradaException( "El titular no existe" );
         }
         Titular titularGuardado = titular.get();
         titularGuardado.setNombre( titularDto.getNombre() );
