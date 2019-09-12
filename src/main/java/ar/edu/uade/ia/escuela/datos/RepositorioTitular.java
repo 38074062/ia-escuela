@@ -9,7 +9,7 @@ import ar.edu.uade.ia.escuela.dominio.modelo.Titular;
 public interface RepositorioTitular
 	extends RepositorioBase<Titular, Long>
 {
-	@Query( "select e from #{#entityName} e where e.eliminado=false and e.nombre=?1" )
+	@Query( "select e from #{#entityName} e where e.eliminado=false and e.dni=?1" )
 	Optional<Titular> findByDni(Integer Dni);
 }
 

@@ -26,7 +26,7 @@ public class ControladorFactura
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try
         {
-        	servicioFactura.generarFactura( factura );
+        	servicioFactura.generarFactura(  );
             respuesta.setEstado( true );
             respuesta.setMensaje( MensajePresentacion.FACTURA_CREADA.getDescripcion() );
         }

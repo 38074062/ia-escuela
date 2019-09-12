@@ -10,7 +10,8 @@ import javax.persistence.ManyToOne;
 public class Alumno 
 	extends EntidadBase
 {
-	@GeneratedValue(strategy= GenerationType.IDENTITY) private  Integer legajo;
+	@GeneratedValue(strategy= GenerationType.IDENTITY) 
+	private  Integer legajo;
 	
 	private String nombre;
 	

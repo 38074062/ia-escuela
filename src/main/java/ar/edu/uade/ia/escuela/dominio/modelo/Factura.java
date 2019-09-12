@@ -1,13 +1,12 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Factura
@@ -18,9 +17,11 @@ public class Factura
     private String tipo;
 
     private LocalDate vencimiento;
-    @ManyToOne
+
+    @OneToOne
     private Titular titular;
 
+    @OneToMany( mappedBy = "factura" )
     private List<ItemFactura> items = new LinkedList<>();
 
     public Factura()
@@ -85,6 +86,6 @@ public class Factura
             serviciosFacturados.add( servicioFacturado );
         } );
         itemFactura.setServiciosFacturados( serviciosFacturados );
-        items.add(itemFactura);
+        items.add( itemFactura );
     }
 }

@@ -1,62 +1,72 @@
 package ar.edu.uade.ia.escuela.presentacion.dto;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
-public class FacturaDto 
+public class FacturaDto
 {
-	private Long id;
-	
-	private float total;
-	
-	private Date fecha;
-	
-	private String tipo;
-	
-	private Date vencimiento;
-	
-	public FacturaDto(){
-		super();
-	}
+    private Long id;
 
-	public Long getId() {
-		return id;
-	}
+    private float total;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    private LocalDate fecha;
 
-	public float getTotal() {
-		return total;
-	}
+    private String tipo;
 
-	public void setTotal(float total) {
-		this.total = total;
-	}
+    private LocalDate vencimiento;
 
-	public Date getFecha() {
-		return fecha;
-	}
+    public FacturaDto()
+    {
+        super();
+    }
 
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
+    public Long getId()
+    {
+        return id;
+    }
 
-	public String getTipo() {
-		return tipo;
-	}
+    public void setId( Long id )
+    {
+        this.id = id;
+    }
 
-	public void setTipo(String tipo) {
-		this.tipo = tipo;
-	}
+    public float getTotal()
+    {
+        return total;
+    }
 
-	public Date getVencimiento() {
-		return vencimiento;
-	}
+    public void setTotal( float total )
+    {
+        this.total = total;
+    }
 
-	public void setVencimiento(Date vencimiento) {
-		this.vencimiento = vencimiento;
-	}
+    public LocalDate getFecha()
+    {
+        return fecha;
+    }
 
-	
+    public void setFecha( LocalDate fecha )
+    {
+        this.fecha = fecha;
+    }
+
+    public String getTipo()
+    {
+        return tipo;
+    }
+
+    public void setTipo( String tipo )
+    {
+        this.tipo = tipo;
+    }
+
+    public LocalDate getVencimiento()
+    {
+        return vencimiento;
+    }
+
+    public void setVencimiento( LocalDate vencimiento )
+    {
+        this.vencimiento = vencimiento;
+    }
+
 }

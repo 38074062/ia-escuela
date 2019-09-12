@@ -1,63 +1,96 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
-public class Recibo 
-	extends EntidadBase
+import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+@Entity
+public class Recibo
+    extends EntidadBase
 {
-	private String haber;
-	
-	private float precio;
-	
-	private float descuento;
-	
-	private String horario;
-	
-	private Integer horas;
+    @ManyToOne
+    private Usuario usuario;
 
-	public String getHaber() {
-		return haber;
-	}
+    private String haber;
 
-	public void setHaber(String haber) {
-		this.haber = haber;
-	}
+    private float precio;
 
-	public float getPrecio() {
-		return precio;
-	}
+    private float descuento;
 
-	public void setPrecio(float precio) {
-		this.precio = precio;
-	}
+    private String horario;
 
-	public float getDescuento() {
-		return descuento;
-	}
+    private Integer horas;
 
-	public void setDescuento(float descuento) {
-		this.descuento = descuento;
-	}
+    public Recibo()
+    {
+        super();
+    }
 
-	public String getHorario() {
-		return horario;
-	}
+    public Usuario getUsuario()
+    {
+        return usuario;
+    }
 
-	public void setHorario(String horario) {
-		this.horario = horario;
-	}
+    public void setUsuario( Usuario usuario )
+    {
+        this.usuario = usuario;
+    }
 
-	public Integer getHoras() {
-		return horas;
-	}
+    public String getHaber()
+    {
+        return haber;
+    }
 
-	public void setHoras(Integer horas) {
-		this.horas = horas;
-	}
-	
-	public float calcularTotal(){
-		float total = 0 ;
-		total = precio * horas;
-		total = total - total / descuento;
-		return total;
-	}
+    public void setHaber( String haber )
+    {
+        this.haber = haber;
+    }
+
+    public float getPrecio()
+    {
+        return precio;
+    }
+
+    public void setPrecio( float precio )
+    {
+        this.precio = precio;
+    }
+
+    public float getDescuento()
+    {
+        return descuento;
+    }
+
+    public void setDescuento( float descuento )
+    {
+        this.descuento = descuento;
+    }
+
+    public String getHorario()
+    {
+        return horario;
+    }
+
+    public void setHorario( String horario )
+    {
+        this.horario = horario;
+    }
+
+    public Integer getHoras()
+    {
+        return horas;
+    }
+
+    public void setHoras( Integer horas )
+    {
+        this.horas = horas;
+    }
+
+    public float calcularTotal()
+    {
+        float total = 0;
+        total = precio * horas;
+        total = total - total / descuento;
+        return total;
+    }
 
 }

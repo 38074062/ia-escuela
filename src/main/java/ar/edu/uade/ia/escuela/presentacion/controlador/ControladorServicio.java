@@ -31,7 +31,7 @@ public class ControladorServicio
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try
         {
-            servicioServicio.altaServicio( servicio );
+            servicioServicio.altaEscolaridad( servicio );
             respuesta.setEstado( true );
             respuesta.setMensaje( MensajePresentacion.SERVICIO_CREADO.getDescripcion() );
         }

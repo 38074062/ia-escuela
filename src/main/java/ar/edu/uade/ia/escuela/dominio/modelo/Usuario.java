@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 import ar.edu.uade.ia.escuela.presentacion.dto.ReciboDto;
 
@@ -27,7 +28,8 @@ public class Usuario
     private String cuit;
 
     private Integer dni;
-    
+
+    @OneToMany( mappedBy = "usuario" )
     private List<Recibo> recibos;
 
     @ManyToMany
@@ -47,24 +49,26 @@ public class Usuario
         return nombre;
     }
 
-    public List<Recibo> getRecibos() {
-		return recibos;
-	}
+    public List<Recibo> getRecibos()
+    {
+        return recibos;
+    }
 
-	public void setRecibos(List<ReciboDto> list) {
-		for(ReciboDto r:list)
-		{
-			Recibo reciboActual = new Recibo();
-			reciboActual.setHaber(r.getHaber());
-			reciboActual.setHorario(r.getHorario());
-			reciboActual.setHoras(r.getHoras());
-			reciboActual.setPrecio(r.getPrecio());
-			reciboActual.setDescuento(r.getDescuento());
-			recibos.add(reciboActual);
-		}
-	}
+    public void setRecibos( List<ReciboDto> list )
+    {
+        for ( ReciboDto r : list )
+        {
+            Recibo reciboActual = new Recibo();
+            reciboActual.setHaber( r.getHaber() );
+            reciboActual.setHorario( r.getHorario() );
+            reciboActual.setHoras( r.getHoras() );
+            reciboActual.setPrecio( r.getPrecio() );
+            reciboActual.setDescuento( r.getDescuento() );
+            recibos.add( reciboActual );
+        }
+    }
 
-	public void setNombre( String nombre )
+    public void setNombre( String nombre )
     {
         this.nombre = nombre;
     }

@@ -1,12 +1,14 @@
 package ar.edu.uade.ia.escuela.dominio.modelo;
 
+import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
 @Inheritance(strategy = InheritanceType.JOINED)
+@Entity
 public abstract class Servicio
 	extends EntidadBase
-{
+{    
 	 private String nombre;
 	 
 	 private String tipo;
