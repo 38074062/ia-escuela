@@ -1,8 +1,10 @@
 package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
@@ -26,9 +28,9 @@ public class Titular
     private String email;
 
     @OneToMany( mappedBy = "titular" )
-    private List<Inscripcion> inscripciones;
+    private List<Inscripcion> inscripciones = new LinkedList<Inscripcion>();
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL )
     private CuentaCorriente cuentaCorriente;
 
     private String preferenciaTipoFactura;

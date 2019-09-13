@@ -2,6 +2,7 @@ package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
@@ -18,7 +19,7 @@ public class Inscripcion
     @ManyToOne
     private Titular titular;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     private Alumno alumno;
 
     @ManyToMany

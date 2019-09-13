@@ -30,3 +30,11 @@ build/
 ### VS Code ###
 .vscode/
 /README.md
+/.gitignore
+/.mvn/
+/hs_err_pid4316.log
+/mvnw
+/mvnw.cmd
+/pom.xml
+/sql/
+/src/

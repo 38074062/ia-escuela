@@ -15,7 +15,7 @@ public class CuentaCorriente
 {
 
     @OneToMany( mappedBy = "cuentaCorriente", cascade = CascadeType.ALL )
-    private List<ItemCuenta> itemsCuentas;
+    private List<ItemCuenta> itemsCuentas = new LinkedList<ItemCuenta>();
 
     private String cuentaBancaria;
 

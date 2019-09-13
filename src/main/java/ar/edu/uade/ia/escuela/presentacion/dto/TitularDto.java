@@ -2,6 +2,8 @@ package ar.edu.uade.ia.escuela.presentacion.dto;
 
 public class TitularDto
 {
+	private Long id;
+	
     private Integer dni;
 
     private String nombre;
@@ -73,5 +75,14 @@ public class TitularDto
     {
         this.cuentaBancaria = cuentaBancaria;
     }
+
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;		
+	}
 
 }

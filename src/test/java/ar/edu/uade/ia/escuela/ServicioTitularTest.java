@@ -11,7 +11,6 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ar.edu.uade.ia.escuela.presentacion.dto.EscolaridadDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
@@ -38,10 +37,19 @@ public class ServicioTitularTest
         titularDto.setDni(12345678);
         titularDto.setEmail("jperez@uade.edu.ar");
         titularDto.setCuentaBancaria("3120941931203");
+        TitularDto titularDto2 = new TitularDto();
+        titularDto2.setNombre("Bruno");
+        titularDto2.setApellido("Diaz");
+        titularDto2.setDireccion("Mitre 1043");
+        titularDto2.setDni(165854688);
+        titularDto2.setEmail("batman@uade.edu.ar");
+        titularDto2.setCuentaBancaria("842536974155");
+        
         // Cuando
         servicio.altaTitular( titularDto );
+        servicio.altaTitular( titularDto2 );
         // Entonces
-        assertEquals( 1, servicio.listarTitulares().size() );
+        assertEquals( 2, servicio.listarTitulares().size() );
     }
 
    

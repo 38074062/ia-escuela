@@ -14,6 +14,7 @@ import ar.edu.uade.ia.escuela.dominio.modelo.facturacion.CuentaCorriente;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
+import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
 
@@ -29,11 +30,12 @@ public class ServicioTitularImpl
     @Override
     public void altaTitular( TitularDto titularDto )
     {
-        if ( repositorioTitular.findByDni( titularDto.getDni() ) != null )
+    	Optional<Titular> optTitular = repositorioTitular.findByDni( titularDto.getDni() );
+        if ( optTitular.isPresent() )
         {
-            throw new NombreExistenteException();
+            throw new DniExistenteException();
         }
-        Titular titular = new Titular();
+        Titular titular = optTitular.orElse(new Titular());
         titular.setNombre( titularDto.getNombre() );
         titular.setApellido( titularDto.getApellido() );
         titular.setDni( titularDto.getDni() );
@@ -58,12 +60,11 @@ public class ServicioTitularImpl
     @Override
     public void modificarTitular( TitularDto titularDto )
     {
-        Optional<Titular> titular = repositorioTitular.findByDni( titularDto.getDni() );
-        if ( !titular.isPresent() )
+        if ( repositorioTitular.findByDni( titularDto.getDni() ) != null )
         {
             throw new EntidadNoEncontradaException( "El titular no existe" );
         }
-        Titular titularGuardado = titular.get();
+        Titular titularGuardado = new Titular();
         titularGuardado.setNombre( titularDto.getNombre() );
         titularGuardado.setApellido( titularDto.getApellido() );
         titularGuardado.setDni( titularDto.getDni() );
@@ -84,6 +85,7 @@ public class ServicioTitularImpl
         for ( Titular s : titulares )
         {
             TitularDto sg = new TitularDto();
+            sg.setId(s.getId());
             sg.setDni( s.getDni() );
             sg.setNombre( s.getNombre() );
             sg.setApellido( s.getApellido() );

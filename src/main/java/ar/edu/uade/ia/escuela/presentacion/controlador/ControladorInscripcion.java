@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
+import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
@@ -22,7 +22,7 @@ public class ControladorInscripcion
 	 private ServicioInscripcion servicioInscripcion;
 
 	 @PostMapping( "/inscripcion" )
-	 public RespuestaApiDto<Object> inscribirAlumno( @RequestBody InscripcionDto inscripcion , Alumno alumno, Integer dni)
+	 public RespuestaApiDto<Object> inscribirAlumno( @RequestBody InscripcionDto inscripcion , AlumnoDto alumno, Integer dni)
 	 {
 	 RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
 	 try

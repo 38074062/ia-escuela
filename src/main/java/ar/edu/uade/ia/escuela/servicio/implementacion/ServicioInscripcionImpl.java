@@ -16,10 +16,12 @@ import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
+import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
+import ar.edu.uade.ia.escuela.servicio.error.TitularNoExisteException;
 
 
 @Service
@@ -36,9 +38,16 @@ public class ServicioInscripcionImpl
 	RepositorioInscripcion repositorioInscripcion;
 	
 	@Override
-    public void inscribirAlumno( InscripcionDto inscripcionDto, Alumno alumno, Integer dni)
+    public void inscribirAlumno( InscripcionDto inscripcionDto, AlumnoDto alumno, Integer dni)
     {
-        if ( repositorioAlumno.findByDni( alumno.getDni()) != null )
+		Optional<Titular> optTitular = repositorioTitular.findByDni( dni );
+			if ( !optTitular.isPresent() )
+			{
+	            throw new TitularNoExisteException();
+	        }
+	    Titular titular = optTitular.get();
+	        
+		if ( repositorioAlumno.findByDni( alumno.getDni()) != null )
         {
             throw new DniExistenteException();
         }
@@ -46,13 +55,7 @@ public class ServicioInscripcionImpl
         alumnoActual.setNombre( alumno.getNombre() );
         alumnoActual.setApellido( alumno.getApellido() );
         alumnoActual.setDni( alumno.getDni() );
-        repositorioAlumno.save(alumnoActual);
-        
-        Optional<Titular> titularOpt = repositorioTitular.findByDni(dni);
-        Titular titular = new Titular();
-        titular = titularOpt.get();
-        
-        
+                
         Inscripcion inscripcionActual = new Inscripcion();
         inscripcionActual.setId(inscripcionDto.getId());
         inscripcionActual.setTitular(titular);
@@ -60,6 +63,7 @@ public class ServicioInscripcionImpl
         repositorioInscripcion.save(inscripcionActual);
     }
 
+	@Override
 	public void agregarServicios(InscripcionDto inscripcionDto, List<Servicio> servicios)
 	{
 		Optional<Inscripcion> inscripcion = repositorioInscripcion.findById(inscripcionDto.getId());

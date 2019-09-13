@@ -2,7 +2,8 @@ package ar.edu.uade.ia.escuela.servicio.error;
 
 import ar.edu.uade.ia.escuela.servicio.MensajeServicio;
 
-public class NombreExistenteException extends RuntimeException {
+public class NombreExistenteException extends RuntimeException 
+{
 
     private static final long serialVersionUID = 1L;
 

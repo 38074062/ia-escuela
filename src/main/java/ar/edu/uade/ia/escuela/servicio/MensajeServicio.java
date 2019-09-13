@@ -5,7 +5,8 @@ public enum MensajeServicio
     NOMBRE_USUARIO_EXISTENTE( "El nombre de usuario ya existe" ),
     DNI_EXISTENTE( "El dni ingresado ya está asociado" ),
     CARGO_INEXISTENTE( "El cargo ingresado es inválido" ),
-	NOMBRE_EXISTENTE("El nombre ya existe");
+	NOMBRE_EXISTENTE("El nombre ya existe"), 
+	TITULAR_NOEXISTE("El titular no existe");
 	
     private String descripcion;
 
