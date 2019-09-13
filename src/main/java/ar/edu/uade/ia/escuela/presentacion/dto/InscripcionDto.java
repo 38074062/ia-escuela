@@ -2,79 +2,61 @@ package ar.edu.uade.ia.escuela.presentacion.dto;
 
 import java.util.List;
 
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-
-import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
-import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
-import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
-
-public class InscripcionDto 
+public class InscripcionDto
 {
-	private Long id; 
-	
-	@OneToOne
-	private Titular titular;
-	
-	@OneToOne
-	private Alumno alumno;
-	
-	@OneToMany
-	private List<Servicio> servicios;
-	
-	public InscripcionDto()
-	{
-		super();
-	}
+    private Long id;
 
-	public float getCuota()
-	{
-		float cuota;
-		cuota = calcularTotal()/12;
-		return cuota;
-	}
-			
-	private float calcularTotal()
-	{
-		float total=0;
-		for(Servicio s:servicios)
-		{
-			total = total + s.getPrecio();
-		}
-		return total;
-	}
-	
-	public Long getId(){
-		return id;
-	}
-	
+    private Long idTitular;
 
-	public Titular getTitular() {
-		return titular;
-	}
+    private AlumnoDto alumno;
 
-	public void setTitular(Titular titular) {
-		this.titular = titular;
-	}
+    private List<Long> idServicios;
 
-	public Alumno getAlumno() {
-		return alumno;
-	}
+    public InscripcionDto()
+    {
+        super();
+    }
 
-	public void setAlumno(Alumno alumno) {
-		this.alumno = alumno;
-	}
+    public Long getId()
+    {
+        return id;
+    }
 
-	public List<Servicio> getServicios() {
-		return servicios;
-	}
+    public void setId( Long id )
+    {
+        this.id = id;
+    }
 
-	public void setServicios(List<Servicio> servicios) {
-		this.servicios = servicios;
-	}
+    public Long getIdTitular()
+    {
+        return idTitular;
+    }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+    public void setIdTitular( Long idTitular )
+    {
+        this.idTitular = idTitular;
+    }
+
+    public AlumnoDto getAlumno()
+    {
+        return alumno;
+    }
+
+    public void setAlumno( AlumnoDto alumno )
+    {
+        this.alumno = alumno;
+    }
+
+    public List<Long> getIdServicios()
+    {
+        return idServicios;
+    }
+
+    public void setIdServicios( List<Long> idServicios )
+    {
+        this.idServicios = idServicios;
+    }
+    
+    
 
 }

@@ -1,6 +1,7 @@
 package ar.edu.uade.ia.escuela.servicio.implementacion;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioAlumno;
 import ar.edu.uade.ia.escuela.datos.RepositorioInscripcion;
+import ar.edu.uade.ia.escuela.datos.RepositorioServicio;
 import ar.edu.uade.ia.escuela.datos.RepositorioTitular;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
@@ -21,72 +23,88 @@ import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
-import ar.edu.uade.ia.escuela.servicio.error.TitularNoExisteException;
-
 
 @Service
 @Transactional
-
-public class ServicioInscripcionImpl 
-	implements ServicioInscripcion
+public class ServicioInscripcionImpl
+    implements ServicioInscripcion
 {
-	@Autowired
-	RepositorioAlumno repositorioAlumno;
-	@Autowired
-	RepositorioTitular repositorioTitular;
-	@Autowired
-	RepositorioInscripcion repositorioInscripcion;
-	
-	@Override
-    public void inscribirAlumno( InscripcionDto inscripcionDto, AlumnoDto alumno, Integer dni)
+    @Autowired
+    private RepositorioAlumno repositorioAlumno;
+
+    @Autowired
+    private RepositorioTitular repositorioTitular;
+
+    @Autowired
+    private RepositorioInscripcion repositorioInscripcion;
+
+    @Autowired
+    private RepositorioServicio repositorioServicio;
+
+    @Override
+    public void inscribirAlumno( InscripcionDto inscripcionDto )
     {
-		Optional<Titular> optTitular = repositorioTitular.findByDni( dni );
-			if ( !optTitular.isPresent() )
-			{
-	            throw new TitularNoExisteException();
-	        }
-	    Titular titular = optTitular.get();
-	        
-		if ( repositorioAlumno.findByDni( alumno.getDni()) != null )
+        Optional<Titular> optTitular = repositorioTitular.findById( inscripcionDto.getIdTitular() );
+        if ( !optTitular.isPresent() )
+        {
+            throw new EntidadNoEncontradaException( "El titular ingresado no existe" );
+        }
+        Titular titular = optTitular.get();
+        if ( repositorioAlumno.findByDni( inscripcionDto.getAlumno().getDni() ) != null )
         {
             throw new DniExistenteException();
         }
         Alumno alumnoActual = new Alumno();
-        alumnoActual.setNombre( alumno.getNombre() );
-        alumnoActual.setApellido( alumno.getApellido() );
-        alumnoActual.setDni( alumno.getDni() );
-                
+        alumnoActual.setNombre( inscripcionDto.getAlumno().getNombre() );
+        alumnoActual.setApellido( inscripcionDto.getAlumno().getApellido() );
+        alumnoActual.setDni( inscripcionDto.getAlumno().getDni() );
         Inscripcion inscripcionActual = new Inscripcion();
-        inscripcionActual.setId(inscripcionDto.getId());
-        inscripcionActual.setTitular(titular);
-        inscripcionActual.setAlumno(alumnoActual);
-        repositorioInscripcion.save(inscripcionActual);
+        inscripcionActual.setId( inscripcionDto.getId() );
+        inscripcionActual.setTitular( titular );
+        inscripcionActual.setAlumno( alumnoActual );
+        inscripcionActual.setServicios( buscarServiciosPorId( inscripcionDto.getIdServicios() ) );
+        repositorioInscripcion.save( inscripcionActual );
     }
 
-	@Override
-	public void agregarServicios(InscripcionDto inscripcionDto, List<Servicio> servicios)
-	{
-		Optional<Inscripcion> inscripcion = repositorioInscripcion.findById(inscripcionDto.getId());
-		if ( !inscripcion.isPresent())
+    private List<Servicio> buscarServiciosPorId( List<Long> idServicios )
+    {
+        List<Servicio> servicios = new LinkedList<>();
+        for ( Long id : idServicios )
         {
-            throw new EntidadNoEncontradaException("La inscripcion no existe");
+            Optional<Servicio> servicioOpt = repositorioServicio.findById( id );
+            if ( !servicioOpt.isPresent() )
+            {
+                throw new EntidadNoEncontradaException( "El servicio ingresado no existe" );
+            }
+            servicios.add( servicioOpt.get() );
         }
-		Inscripcion inscripcionActual = inscripcion.get();
-		inscripcionActual.setServicios(servicios);	
-		repositorioInscripcion.save(inscripcionActual);
-	}
-	
-	@Override
-	public List<InscripcionDto> listarInscripciones() {
-		List<Inscripcion> inscripciones = 	repositorioInscripcion.findAll();
-		List<InscripcionDto> inscripcionDto = new ArrayList<InscripcionDto>();
-		for(Inscripcion s:inscripciones)
-		{
-			InscripcionDto sg= new InscripcionDto();
-			sg.setId(s.getId());
-			inscripcionDto.add(sg);
-		}
-		return inscripcionDto;
-	}
+        return servicios;
+    }
+
+    public void agregarServicios( InscripcionDto inscripcionDto, List<Servicio> servicios )
+    {
+        Optional<Inscripcion> inscripcion = repositorioInscripcion.findById( inscripcionDto.getId() );
+        if ( !inscripcion.isPresent() )
+        {
+
+        }
+        Inscripcion inscripcionActual = inscripcion.get();
+        inscripcionActual.setServicios( servicios );
+        repositorioInscripcion.save( inscripcionActual );
+    }
+
+    @Override
+    public List<InscripcionDto> listarInscripciones()
+    {
+        List<Inscripcion> inscripciones = repositorioInscripcion.findAll();
+        List<InscripcionDto> inscripcionDto = new ArrayList<InscripcionDto>();
+        for ( Inscripcion s : inscripciones )
+        {
+            InscripcionDto sg = new InscripcionDto();
+            sg.setId( s.getId() );
+            inscripcionDto.add( sg );
+        }
+        return inscripcionDto;
+    }
 
 }

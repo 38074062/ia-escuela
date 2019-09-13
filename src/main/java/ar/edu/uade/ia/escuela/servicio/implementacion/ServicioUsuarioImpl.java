@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -20,13 +21,17 @@ import ar.edu.uade.ia.escuela.datos.RepositorioRol;
 import ar.edu.uade.ia.escuela.datos.RepositorioUsuario;
 import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Cargo;
 import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Privilegio;
+import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Recibo;
 import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Rol;
 import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Usuario;
 import ar.edu.uade.ia.escuela.presentacion.dto.CargoDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.EmpleadoDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.ReciboDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RegistroUsuarioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
 import ar.edu.uade.ia.escuela.servicio.error.CargoInexistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
+import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreDeUsuarioExistenteException;
 
 @Service
@@ -140,5 +145,55 @@ public class ServicioUsuarioImpl
             }
         }
         return cargosDto;
+    }
+
+    @Override
+    public List<EmpleadoDto> getEmpleados()
+    {
+        return convertirUsuariosAEmpleadosDto( repositorioUsuario.findAll() );
+    }
+
+    private List<EmpleadoDto> convertirUsuariosAEmpleadosDto( List<Usuario> usuarios )
+    {
+        List<EmpleadoDto> empleados = new LinkedList<>();
+        usuarios.forEach( usuario -> empleados.add( convertirUsuarioAEmpleadoDto( usuario ) ) );
+        return empleados;
+    }
+
+    private EmpleadoDto convertirUsuarioAEmpleadoDto( Usuario usuario )
+    {
+        EmpleadoDto empleado = new EmpleadoDto();
+        empleado.setId( usuario.getId() );
+        empleado.setNombre( usuario.getNombre() );
+        empleado.setApellido( usuario.getApellido() );
+        empleado.setDni( usuario.getDni() );
+        empleado.setCuit( usuario.getCuit() );
+        empleado.setNombreUsuario( usuario.getNombreUsuario() );
+        empleado.setCargo( usuario.getCargo().getNombre() );
+        return empleado;
+    }
+
+    @Override
+    public void agregarCargaHoraria( ReciboDto recibo )
+    {
+        Optional<Usuario> usuarioOpt = repositorioUsuario.findById( recibo.getIdEmpleado() );
+        if ( !usuarioOpt.isPresent() )
+        {
+            throw new EntidadNoEncontradaException( "El empleado no existe" );
+        }
+        Usuario usuario = usuarioOpt.get();
+        usuario.agregarRecibo( convertirReciboDtoARecibo( recibo ) );
+        repositorioUsuario.save( usuario );
+    }
+
+    private Recibo convertirReciboDtoARecibo( ReciboDto reciboDto )
+    {
+        Recibo recibo = new Recibo();
+        recibo.setHaber( reciboDto.getHaber() );
+        recibo.setPrecio( reciboDto.getPrecio() );
+        recibo.setDescuento( reciboDto.getDescuento() );
+        recibo.setHorario( reciboDto.getHorario() );
+        recibo.setHoras( reciboDto.getHoras() );
+        return recibo;
     }
 }

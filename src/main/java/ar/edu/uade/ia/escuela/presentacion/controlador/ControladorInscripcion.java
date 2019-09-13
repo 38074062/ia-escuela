@@ -22,12 +22,12 @@ public class ControladorInscripcion
 	 private ServicioInscripcion servicioInscripcion;
 
 	 @PostMapping( "/inscripcion" )
-	 public RespuestaApiDto<Object> inscribirAlumno( @RequestBody InscripcionDto inscripcion , AlumnoDto alumno, Integer dni)
+	 public RespuestaApiDto<Object> inscribirAlumno( @RequestBody InscripcionDto inscripcion)
 	 {
 	 RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
 	 try
 	 {
-	     servicioInscripcion.inscribirAlumno(inscripcion, alumno, dni);
+	     servicioInscripcion.inscribirAlumno(inscripcion);
 	     respuesta.setEstado( true );
 	     respuesta.setMensaje( MensajePresentacion.ALUMNO_INSCRIPTO.getDescripcion() );
 	 }

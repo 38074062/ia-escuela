@@ -1,55 +1,77 @@
 package ar.edu.uade.ia.escuela.presentacion.dto;
 
-public class ReciboDto 
+public class ReciboDto
 {
-private String haber;
-	
-	private float precio;
-	
-	private float descuento;
-	
-	private String horario;
-	
-	private Integer horas;
+    private Long idEmpleado;
 
-	public String getHaber() {
-		return haber;
-	}
+    private String haber;
 
-	public void setHaber(String haber) {
-		this.haber = haber;
-	}
+    private float precio;
 
-	public float getPrecio() {
-		return precio;
-	}
+    private float descuento;
 
-	public void setPrecio(float precio) {
-		this.precio = precio;
-	}
+    private String horario;
 
-	public float getDescuento() {
-		return descuento;
-	}
+    private Integer horas;
 
-	public void setDescuento(float descuento) {
-		this.descuento = descuento;
-	}
+    public Long getIdEmpleado()
+    {
+        return idEmpleado;
+    }
 
-	public String getHorario() {
-		return horario;
-	}
+    public void setIdEmpleado( Long idEmpleado )
+    {
+        this.idEmpleado = idEmpleado;
+    }
 
-	public void setHorario(String horario) {
-		this.horario = horario;
-	}
+    public String getHaber()
+    {
+        return haber;
+    }
 
-	public Integer getHoras() {
-		return horas;
-	}
+    public void setHaber( String haber )
+    {
+        this.haber = haber;
+    }
 
-	public void setHoras(Integer horas) {
-		this.horas = horas;
-	}
+    public float getPrecio()
+    {
+        return precio;
+    }
+
+    public void setPrecio( float precio )
+    {
+        this.precio = precio;
+    }
+
+    public float getDescuento()
+    {
+        return descuento;
+    }
+
+    public void setDescuento( float descuento )
+    {
+        this.descuento = descuento;
+    }
+
+    public String getHorario()
+    {
+        return horario;
+    }
+
+    public void setHorario( String horario )
+    {
+        this.horario = horario;
+    }
+
+    public Integer getHoras()
+    {
+        return horas;
+    }
+
+    public void setHoras( Integer horas )
+    {
+        this.horas = horas;
+    }
 
 }

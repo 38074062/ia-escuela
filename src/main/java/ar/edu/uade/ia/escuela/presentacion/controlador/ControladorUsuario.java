@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
 import ar.edu.uade.ia.escuela.presentacion.dto.CargoDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.EmpleadoDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.ReciboDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RegistroUsuarioDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
 import ar.edu.uade.ia.escuela.servicio.error.CargoInexistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
+import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreDeUsuarioExistenteException;
 
 @RestController
@@ -47,6 +50,33 @@ public class ControladorUsuario
         {
             respuesta.setEstado( false );
             respuesta.setMensaje( e.getMessage() );
+        }
+        return respuesta;
+    }
+
+    @GetMapping( "/empleados" )
+    public RespuestaApiDto<List<EmpleadoDto>> getEmpleados()
+    {
+        RespuestaApiDto<List<EmpleadoDto>> respuesta = new RespuestaApiDto<List<EmpleadoDto>>();
+        respuesta.setDatos( servicioUsuario.getEmpleados() );
+        respuesta.setEstado( true );
+        return respuesta;
+    }
+
+    @PostMapping( "/empleados/{id}/cargaHoraria" )
+    public RespuestaApiDto<Object> agregarCargaHoraria( @RequestBody ReciboDto reciboDto )
+    {
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<>();
+        try
+        {
+            servicioUsuario.agregarCargaHoraria( reciboDto );
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.CARGA_HORARIA_AGREGADA.getDescripcion() );
+        }
+        catch ( EntidadNoEncontradaException ene )
+        {
+            respuesta.setMensaje( ene.getMessage() );
+            respuesta.setEstado( false );
         }
         return respuesta;
     }
