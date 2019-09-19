@@ -1,5 +1,6 @@
 package ar.edu.uade.ia.escuela.presentacion.controlador;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -128,4 +129,12 @@ public class ControladorServicio
         return respuesta;
     }
 
+    @GetMapping("/servicios/categorias")
+    public RespuestaApiDto<List<String>> listarCategorias()
+    {
+        RespuestaApiDto<List<String>> respuesta = new RespuestaApiDto<List<String>>();
+        respuesta.setDatos( Arrays.asList("Comedor","Escolaridad","Adicional"));
+        respuesta.setEstado( true );
+        return respuesta;
+    }
 }

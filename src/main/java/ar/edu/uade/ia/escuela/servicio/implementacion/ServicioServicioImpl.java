@@ -67,9 +67,27 @@ public class ServicioServicioImpl
             sg.setNombre( s.getNombre() );
             sg.setTipo( s.getTipo() );
             sg.setPrecio( s.getPrecio() );
+            sg.setCategoria( getCategoria( s.getClass() ) );
             servicioDto.add( sg );
         }
         return servicioDto;
+    }
+
+    private String getCategoria( Class<? extends Servicio> adicional )
+    {
+        if ( adicional.equals( Escolaridad.class ) )
+        {
+            return "Escolaridad";
+        }
+        if ( adicional.equals( Comedor.class ) )
+        {
+            return "Comedor";
+        }
+        if ( adicional.equals( Adicional.class ) )
+        {
+            return "Adicional";
+        }
+        return "";
     }
 
     @Override

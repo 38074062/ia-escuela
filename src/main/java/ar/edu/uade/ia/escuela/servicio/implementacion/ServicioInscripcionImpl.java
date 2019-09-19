@@ -18,7 +18,6 @@ import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
-import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
@@ -44,7 +43,7 @@ public class ServicioInscripcionImpl
     @Override
     public void inscribirAlumno( InscripcionDto inscripcionDto )
     {
-        Optional<Titular> optTitular = repositorioTitular.findById( inscripcionDto.getIdTitular() );
+        Optional<Titular> optTitular = repositorioTitular.findByDni( inscripcionDto.getIdTitular().intValue() );
         if ( !optTitular.isPresent() )
         {
             throw new EntidadNoEncontradaException( "El titular ingresado no existe" );
@@ -79,18 +78,6 @@ public class ServicioInscripcionImpl
             servicios.add( servicioOpt.get() );
         }
         return servicios;
-    }
-
-    public void agregarServicios( InscripcionDto inscripcionDto, List<Servicio> servicios )
-    {
-        Optional<Inscripcion> inscripcion = repositorioInscripcion.findById( inscripcionDto.getId() );
-        if ( !inscripcion.isPresent() )
-        {
-
-        }
-        Inscripcion inscripcionActual = inscripcion.get();
-        inscripcionActual.setServicios( servicios );
-        repositorioInscripcion.save( inscripcionActual );
     }
 
     @Override

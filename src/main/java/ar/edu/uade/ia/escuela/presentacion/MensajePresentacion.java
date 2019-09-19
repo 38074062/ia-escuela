@@ -8,7 +8,8 @@ public enum MensajePresentacion
     SERVICIO_BORRADO( "Servicio borrado exitosamente" ),
     ALUMNO_INSCRIPTO( "Alumno inscripto correctamente" ),
     FACTURA_CREADA( "Factura creada correctamente" ),
-    CARGA_HORARIA_AGREGADA( "Carga horaria registrada correctamente" );
+    CARGA_HORARIA_AGREGADA( "Carga horaria registrada correctamente" ),
+    TITULAR_CREADO( "Titular creado exitosamente" );
 
     private String descripcion;
 

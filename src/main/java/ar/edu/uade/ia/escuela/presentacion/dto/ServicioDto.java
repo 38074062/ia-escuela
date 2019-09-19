@@ -10,6 +10,8 @@ public abstract class ServicioDto
 
     private float precio;
 
+    private String categoria;
+
     public ServicioDto()
     {
         super();
@@ -53,6 +55,16 @@ public abstract class ServicioDto
     public void setPrecio( float precio )
     {
         this.precio = precio;
+    }
+
+    public String getCategoria()
+    {
+        return categoria;
+    }
+
+    public void setCategoria( String categoria )
+    {
+        this.categoria = categoria;
     }
 
 }

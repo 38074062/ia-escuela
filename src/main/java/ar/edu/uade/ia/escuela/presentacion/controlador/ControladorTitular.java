@@ -9,29 +9,28 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
-import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
-import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
+import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
+import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
-import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 
 @RestController
-public class ControladorInscripcion
+public class ControladorTitular
 {
     @Autowired
-    private ServicioInscripcion servicioInscripcion;
+    private ServicioTitular servicioTitular;
 
-    @PostMapping( "/inscripcion" )
-    public RespuestaApiDto<Object> inscribirAlumno( @RequestBody InscripcionDto inscripcion )
+    @PostMapping( "/titulares" )
+    public RespuestaApiDto<Object> altaTitular( @RequestBody TitularDto titular )
     {
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try
         {
-            servicioInscripcion.inscribirAlumno( inscripcion );
+            servicioTitular.altaTitular( titular );
             respuesta.setEstado( true );
-            respuesta.setMensaje( MensajePresentacion.ALUMNO_INSCRIPTO.getDescripcion() );
+            respuesta.setMensaje( MensajePresentacion.TITULAR_CREADO.getDescripcion() );
         }
-        catch ( DniExistenteException | EntidadNoEncontradaException e )
+        catch ( DniExistenteException e )
         {
             respuesta.setEstado( false );
             respuesta.setMensaje( e.getMessage() );
@@ -39,13 +38,12 @@ public class ControladorInscripcion
         return respuesta;
     }
 
-    @GetMapping( "/inscripcion" )
-    public RespuestaApiDto<List<InscripcionDto>> listarInscripciones()
+    @GetMapping( "/titulares" )
+    public RespuestaApiDto<List<TitularDto>> listarTitulares()
     {
-        RespuestaApiDto<List<InscripcionDto>> respuesta = new RespuestaApiDto<List<InscripcionDto>>();
-        respuesta.setDatos( servicioInscripcion.listarInscripciones() );
+        RespuestaApiDto<List<TitularDto>> respuesta = new RespuestaApiDto<List<TitularDto>>();
+        respuesta.setDatos( servicioTitular.listarTitulares() );
         respuesta.setEstado( true );
         return respuesta;
     }
-
 }
