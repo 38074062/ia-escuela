@@ -2,13 +2,11 @@ package ar.edu.uade.ia.escuela;
 
 import static org.junit.Assert.*;
 
-import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.h2.tools.Server;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.PagoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioFactura;
@@ -42,14 +41,6 @@ public class FacturacionTest
 
     @Autowired
     private ServicioTitular titular;
-
-    @Before
-    public void initTest()
-        throws SQLException
-    {
-        Server webServer = Server.createWebServer( "-web", "-webAllowOthers", "-webPort", "8082" );
-        webServer.start();
-    }
 
     @Test
     public void facturar()
@@ -112,5 +103,15 @@ public class FacturacionTest
 
         // Entonces
         assertEquals( 1, factura.listarFacturas().size() );
+
+        PagoDto pago = new PagoDto();
+        pago.setTitularId( titulares.get( 0 ).getId() );
+        pago.setFacturaId( factura.listarFacturas().get( 0 ).getId() );
+        pago.setFecha( LocalDate.now() );
+        pago.setMonto( 800L );
+        titular.registrarPago( pago );
+
+        assertEquals( "Facturada",
+                      titular.getTitular( titulares.get( 0 ).getId() ).getFacturas().get( 0 ).getEstado() );
     }
 }
