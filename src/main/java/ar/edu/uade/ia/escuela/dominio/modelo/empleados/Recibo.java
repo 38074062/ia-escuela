@@ -1,6 +1,7 @@
 package ar.edu.uade.ia.escuela.dominio.modelo.empleados;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
@@ -10,6 +11,7 @@ public class Recibo
     extends EntidadBase
 {
     @ManyToOne
+    @JoinColumn(name="usuario_id", nullable=false)
     private Usuario usuario;
 
     private String haber;

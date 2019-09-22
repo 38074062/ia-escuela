@@ -1,7 +1,6 @@
 package ar.edu.uade.ia.escuela;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,10 +11,7 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
-import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
-import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
-import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 
 @RunWith( SpringRunner.class )
 @SpringBootTest

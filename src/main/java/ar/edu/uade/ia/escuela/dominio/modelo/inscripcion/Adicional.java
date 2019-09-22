@@ -10,4 +10,10 @@ public class Adicional
 	{
 		super();
 	}
+
+    @Override
+    public String getCategoria()
+    {
+        return "Adicional";
+    }
 }

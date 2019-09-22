@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
-import ar.edu.uade.ia.escuela.presentacion.dto.AdicionalDto;
-import ar.edu.uade.ia.escuela.presentacion.dto.ComedorDto;
-import ar.edu.uade.ia.escuela.presentacion.dto.EscolaridadDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
@@ -30,7 +27,7 @@ public class ControladorServicio
     private ServicioServicio servicioServicio;
 
     @PostMapping( "/servicios/escolaridad" )
-    public RespuestaApiDto<Object> altaServicioEscolaridad( @RequestBody EscolaridadDto servicio )
+    public RespuestaApiDto<Object> altaServicioEscolaridad( @RequestBody ServicioDto servicio )
     {
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try
@@ -48,7 +45,7 @@ public class ControladorServicio
     }
 
     @PostMapping( "/servicios/comedor" )
-    public RespuestaApiDto<Object> altaServicioComedor( @RequestBody ComedorDto servicio )
+    public RespuestaApiDto<Object> altaServicioComedor( @RequestBody ServicioDto servicio )
     {
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try
@@ -66,7 +63,7 @@ public class ControladorServicio
     }
 
     @PostMapping( "/servicios/adicional" )
-    public RespuestaApiDto<Object> altaServicioAdicional( @RequestBody AdicionalDto servicio )
+    public RespuestaApiDto<Object> altaServicioAdicional( @RequestBody ServicioDto servicio )
     {
         RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
         try

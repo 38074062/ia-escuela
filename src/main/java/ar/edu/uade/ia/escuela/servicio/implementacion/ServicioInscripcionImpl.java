@@ -1,6 +1,5 @@
 package ar.edu.uade.ia.escuela.servicio.implementacion;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +17,10 @@ import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
+import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDetalleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
@@ -57,6 +59,7 @@ public class ServicioInscripcionImpl
         alumnoActual.setNombre( inscripcionDto.getAlumno().getNombre() );
         alumnoActual.setApellido( inscripcionDto.getAlumno().getApellido() );
         alumnoActual.setDni( inscripcionDto.getAlumno().getDni() );
+        alumnoActual.setTitular(titular);
         Inscripcion inscripcionActual = new Inscripcion();
         inscripcionActual.setId( inscripcionDto.getId() );
         inscripcionActual.setTitular( titular );
@@ -81,17 +84,40 @@ public class ServicioInscripcionImpl
     }
 
     @Override
-    public List<InscripcionDto> listarInscripciones()
+    public List<InscripcionDetalleDto> listarInscripciones()
     {
         List<Inscripcion> inscripciones = repositorioInscripcion.findAll();
-        List<InscripcionDto> inscripcionDto = new ArrayList<InscripcionDto>();
-        for ( Inscripcion s : inscripciones )
-        {
-            InscripcionDto sg = new InscripcionDto();
-            sg.setId( s.getId() );
-            inscripcionDto.add( sg );
-        }
-        return inscripcionDto;
+        List<InscripcionDetalleDto> inscripcionesDto = new LinkedList<>();
+        inscripciones.forEach( inscripcion -> {
+            InscripcionDetalleDto inscricpionDto = new InscripcionDetalleDto();
+            inscricpionDto.setId( inscripcion.getId() );
+            inscricpionDto.setAlumno( convertirAlumnoAAlumnoDto( inscripcion.getAlumno() ) );
+            inscricpionDto.setServicios( convertirServiciosAServiciosDto( inscripcion.getServicios() ) );
+        } );
+        return inscripcionesDto;
+    }
+
+    private List<ServicioDto> convertirServiciosAServiciosDto( List<Servicio> servicios )
+    {
+        List<ServicioDto> serviciosDto = new LinkedList<>();
+        servicios.forEach( servicio -> {
+            ServicioDto servicioDto = new ServicioDto();
+            servicioDto.setNombre( servicio.getNombre() );
+            servicioDto.setTipo( servicio.getTipo() );
+            servicioDto.setPrecio( servicio.getPrecio() );
+            servicioDto.setCategoria( servicio.getCategoria() );
+            serviciosDto.add( servicioDto );
+        } );
+        return serviciosDto;
+    }
+
+    private AlumnoDto convertirAlumnoAAlumnoDto( Alumno alumno )
+    {
+        AlumnoDto alumnoDto = new AlumnoDto();
+        alumnoDto.setDni( alumno.getDni() );
+        alumnoDto.setNombre( alumno.getNombre() );
+        alumnoDto.setApellido( alumno.getApellido() );
+        return alumnoDto;
     }
 
 }

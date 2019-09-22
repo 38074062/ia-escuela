@@ -79,7 +79,7 @@ public class Factura
         vencimiento = ven;
     }
 
-    public void addInscripcion( Inscripcion inscripcion )
+    public void addInscripcion( Inscripcion inscripcion, Integer cantidadCuotas )
     {
         ItemFactura itemFactura = new ItemFactura();
         itemFactura.setInscripcion( inscripcion );
@@ -87,10 +87,33 @@ public class Factura
         inscripcion.getServicios().forEach( servicio -> {
             ServicioFacturado servicioFacturado = new ServicioFacturado();
             servicioFacturado.setNombre( servicio.getNombre() );
-            servicioFacturado.setMontoFacturado( servicio.getPrecio() );
+            servicioFacturado.setMontoFacturado( servicio.getCuota( cantidadCuotas ) );
             serviciosFacturados.add( servicioFacturado );
         } );
         itemFactura.setServiciosFacturados( serviciosFacturados );
+        itemFactura.setFactura( this );
         items.add( itemFactura );
     }
+
+    public Boolean estaPagada( float monto )
+    {
+        return this.getTotal() == monto;
+    }
+
+    public Boolean estaVencida( LocalDate fecha )
+    {
+        return vencimiento.isBefore( fecha );
+    }
+
+    public String getDescripcion()
+    {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    public boolean esFactura( Long facturaId )
+    {
+        return this.id.equals( facturaId );
+    }
+
 }

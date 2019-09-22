@@ -8,6 +8,7 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioFactura;
@@ -23,7 +24,11 @@ import ar.edu.uade.ia.escuela.servicio.ServicioFactura;
 public class ServicioFacturaImpl
     implements ServicioFactura
 {
-    private static final Long FECHA_VENCIMIENTO_DIAS = 7L;
+    @Value( "${fechaVencimientoDias}" )
+    private Long fechaVencimientoDias;
+
+    @Value( "${cantidadCuotas}" )
+    private Integer cantidadCuotas;
 
     @Autowired
     private RepositorioTitular repositorioTitulares;
@@ -41,10 +46,10 @@ public class ServicioFacturaImpl
             factura.setTitular( titular );
             factura.setTipo( titular.getPreferenciaTipoFactura() );
             factura.setFecha( LocalDate.now() );
-            factura.setVencimiento( LocalDate.now().plusDays( FECHA_VENCIMIENTO_DIAS ) );
+            factura.setVencimiento( LocalDate.now().plusDays( fechaVencimientoDias ) );
             List<Inscripcion> inscripcionesActivas = titular.getInscripcionesActivas();
             inscripcionesActivas.forEach( inscripcion -> {
-                factura.addInscripcion( inscripcion );
+                factura.addInscripcion( inscripcion, cantidadCuotas );
             } );
             facturas.add( factura );
             titular.addFacturaACuentaCorriente( factura );

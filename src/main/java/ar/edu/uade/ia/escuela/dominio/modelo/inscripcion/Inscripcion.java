@@ -17,6 +17,7 @@ public class Inscripcion
     extends EntidadBase
 {
     @ManyToOne
+    @JoinColumn(name="titular_id", nullable=false)
     private Titular titular;
 
     @OneToOne(cascade = CascadeType.ALL)

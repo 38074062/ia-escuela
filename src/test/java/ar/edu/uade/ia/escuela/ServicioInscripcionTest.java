@@ -14,7 +14,6 @@ import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
-import ar.edu.uade.ia.escuela.presentacion.dto.EscolaridadDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
@@ -40,7 +39,7 @@ public class ServicioInscripcionTest
 	public void inscribirAlumno()
 	{
 		//Dado
-		EscolaridadDto escolaridadDto = new EscolaridadDto();
+		ServicioDto escolaridadDto = new ServicioDto();
 		escolaridadDto.setId(01L);
         escolaridadDto.setNombre( "Media jornada" );
         escolaridadDto.setPrecio( 5000L );

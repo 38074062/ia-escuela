@@ -11,7 +11,7 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.annotation.DirtiesContext.ClassMode;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import ar.edu.uade.ia.escuela.presentacion.dto.EscolaridadDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioServicio;
 import ar.edu.uade.ia.escuela.servicio.error.NombreExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
@@ -29,7 +29,7 @@ public class ServicioServicioTest
     public void crearServicioEscolaridad()
     {
         // Dado
-        EscolaridadDto escolaridadDto = new EscolaridadDto();
+        ServicioDto escolaridadDto = new ServicioDto();
         escolaridadDto.setNombre( "Media jornada" );
         escolaridadDto.setPrecio( 5000L );
         // Cuando
@@ -42,7 +42,7 @@ public class ServicioServicioTest
     public void crearServicioEscolaridadNombreDuplicado()
     {
         // Dado
-        EscolaridadDto escolaridadDto = new EscolaridadDto();
+        ServicioDto escolaridadDto = new ServicioDto();
         escolaridadDto.setNombre( "Media jornada" );
         escolaridadDto.setPrecio( 5000L );
         // Cuando
@@ -55,7 +55,7 @@ public class ServicioServicioTest
     public void borrarEscolaridad()
     {
         // Dado
-        EscolaridadDto escolaridadDto = new EscolaridadDto();
+        ServicioDto escolaridadDto = new ServicioDto();
         escolaridadDto.setNombre( "Media jornada" );
         escolaridadDto.setPrecio( 5000L );
         servicio.altaEscolaridad( escolaridadDto );
@@ -71,7 +71,7 @@ public class ServicioServicioTest
     public void borrarEscolaridadInexistente()
     {
         // Dado
-        EscolaridadDto escolaridadDto = new EscolaridadDto();
+        ServicioDto escolaridadDto = new ServicioDto();
         escolaridadDto.setNombre( "Media jornada" );
         escolaridadDto.setPrecio( 5000L );
         servicio.altaEscolaridad( escolaridadDto );
@@ -83,13 +83,13 @@ public class ServicioServicioTest
     }
 
     @Test
-    public void testFindAllStations()
+    public void listarServicios()
     {
         // Dado
-        EscolaridadDto escolaridadDto1 = new EscolaridadDto();
+        ServicioDto escolaridadDto1 = new ServicioDto();
         escolaridadDto1.setNombre( "Media jornada" );
         escolaridadDto1.setPrecio( 5000L );
-        EscolaridadDto escolaridadDto2 = new EscolaridadDto();
+        ServicioDto escolaridadDto2 = new ServicioDto();
         escolaridadDto2.setNombre( "Jornada completa" );
         escolaridadDto2.setPrecio( 5000L );
         // Cuando

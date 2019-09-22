@@ -1,6 +1,7 @@
 package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 
@@ -12,6 +13,7 @@ public class ServicioFacturado
     extends EntidadBase
 {
     @ManyToOne
+    @JoinColumn(name="item_factura_id", nullable=false)
     private ItemFactura itemFactura;
 
     @OneToOne

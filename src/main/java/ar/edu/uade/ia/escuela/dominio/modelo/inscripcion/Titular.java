@@ -1,5 +1,6 @@
 package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -30,7 +31,7 @@ public class Titular
     @OneToMany( mappedBy = "titular" )
     private List<Inscripcion> inscripciones = new LinkedList<Inscripcion>();
 
-    @OneToOne(cascade = CascadeType.ALL )
+    @OneToOne( cascade = CascadeType.ALL )
     private CuentaCorriente cuentaCorriente;
 
     private String preferenciaTipoFactura;
@@ -127,7 +128,13 @@ public class Titular
 
     public void addFacturaACuentaCorriente( Factura factura )
     {
-        this.cuentaCorriente.addFactura( factura );
+        this.cuentaCorriente.agregarFactura( factura );
+    }
+
+    public void registrarPago( Long facturaId, LocalDate fecha, float monto )
+    {
+        cuentaCorriente.registrarPago( facturaId, fecha, monto );
+
     }
 
 }

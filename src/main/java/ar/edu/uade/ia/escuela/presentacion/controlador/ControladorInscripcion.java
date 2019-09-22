@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
+import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDetalleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
@@ -40,9 +41,9 @@ public class ControladorInscripcion
     }
 
     @GetMapping( "/inscripcion" )
-    public RespuestaApiDto<List<InscripcionDto>> listarInscripciones()
+    public RespuestaApiDto<List<InscripcionDetalleDto>> listarInscripciones()
     {
-        RespuestaApiDto<List<InscripcionDto>> respuesta = new RespuestaApiDto<List<InscripcionDto>>();
+        RespuestaApiDto<List<InscripcionDetalleDto>> respuesta = new RespuestaApiDto<>();
         respuesta.setDatos( servicioInscripcion.listarInscripciones() );
         respuesta.setEstado( true );
         return respuesta;

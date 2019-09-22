@@ -1,5 +1,6 @@
 package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
+import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 
+import ar.edu.uade.ia.escuela.dominio.error.FacturaNoEncontradaException;
 import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 
 @Entity
@@ -67,11 +69,35 @@ public class CuentaCorriente
         return aux;
     }
 
-    public void addFactura( Factura factura )
+    public void agregarFactura( Factura factura )
     {
         ItemCuenta itemCuenta = new ItemCuenta();
+        itemCuenta.setCuentaCorriente( this );
         itemCuenta.setFactura( factura );
         this.itemsCuentas.add( itemCuenta );
+    }
+
+    public void registrarPago( Long facturaId, LocalDate fecha, float monto )
+    {
+        ItemCuenta item = buscarFactura( facturaId );
+        if ( item == null )
+        {
+            throw new FacturaNoEncontradaException( "La factura ingresada no existe" );
+        }
+        item.registrarPago( fecha, monto );
+
+    }
+
+    private ItemCuenta buscarFactura( Long facturaId )
+    {
+        for ( ItemCuenta item : itemsCuentas )
+        {
+            if ( item.correspondeAFactura( facturaId ) )
+            {
+                return item;
+            }
+        }
+        return null;
     }
 
 }
