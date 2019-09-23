@@ -121,6 +121,7 @@ public class ServicioTitularImpl
     private TitularDetalleDto convertirTitularATitularDetalleDto( Titular titular )
     {
         TitularDetalleDto titularDetalleDto = new TitularDetalleDto();
+		titularDetalleDto.setId( titular.getId() );
         titularDetalleDto.setDni( titular.getDni() );
         titularDetalleDto.setNombre( titular.getNombre() );
         titularDetalleDto.setApellido( titular.getApellido() );
