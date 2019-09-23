@@ -154,6 +154,7 @@ public class ServicioTitularImpl
             inscricpionDto.setId( inscripcion.getId() );
             inscricpionDto.setAlumno( convertirAlumnoAAlumnoDto( inscripcion.getAlumno() ) );
             inscricpionDto.setServicios( convertirServiciosAServiciosDto( inscripcion.getServicios() ) );
+			inscripcionesDto.add( inscricpionDto );
         } );
         return inscripcionesDto;
     }
