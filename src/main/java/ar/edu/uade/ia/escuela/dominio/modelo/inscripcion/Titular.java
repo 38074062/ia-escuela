@@ -137,4 +137,9 @@ public class Titular
 
     }
 
+    public String getNombreCompleto()
+    {
+        return nombre + " " + apellido;
+    }
+
 }

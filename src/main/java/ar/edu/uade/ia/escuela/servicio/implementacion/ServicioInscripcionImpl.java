@@ -90,10 +90,12 @@ public class ServicioInscripcionImpl
         List<Inscripcion> inscripciones = repositorioInscripcion.findAll();
         List<InscripcionDetalleDto> inscripcionesDto = new LinkedList<>();
         inscripciones.forEach( inscripcion -> {
-            InscripcionDetalleDto inscricpionDto = new InscripcionDetalleDto();
-            inscricpionDto.setId( inscripcion.getId() );
-            inscricpionDto.setAlumno( convertirAlumnoAAlumnoDto( inscripcion.getAlumno() ) );
-            inscricpionDto.setServicios( convertirServiciosAServiciosDto( inscripcion.getServicios() ) );
+            InscripcionDetalleDto inscripionDto = new InscripcionDetalleDto();
+            inscripionDto.setId( inscripcion.getId() );
+            inscripionDto.setAlumno( convertirAlumnoAAlumnoDto( inscripcion.getAlumno() ) );
+            inscripionDto.setDniTitular( inscripcion.getTitular().getDni() );
+            inscripionDto.setServicios( convertirServiciosAServiciosDto( inscripcion.getServicios() ) );
+            inscripcionesDto.add( inscripionDto );
         } );
         return inscripcionesDto;
     }

@@ -10,7 +10,7 @@ public class FacturaDto
 
     private LocalDate fecha;
 
-    private String tipo;
+    private String titular;
 
     private LocalDate vencimiento;
 
@@ -49,14 +49,14 @@ public class FacturaDto
         this.fecha = fecha;
     }
 
-    public String getTipo()
+    public String getTitular()
     {
-        return tipo;
+        return titular;
     }
 
-    public void setTipo( String tipo )
+    public void setTitular( String titular )
     {
-        this.tipo = tipo;
+        this.titular = titular;
     }
 
     public LocalDate getVencimiento()

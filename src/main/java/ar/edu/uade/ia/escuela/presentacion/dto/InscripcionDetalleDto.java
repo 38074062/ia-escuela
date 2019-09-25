@@ -8,6 +8,8 @@ public class InscripcionDetalleDto
 
     private AlumnoDto alumno;
 
+    private Integer dniTitular;
+
     private List<ServicioDto> servicios;
 
     public InscripcionDetalleDto()
@@ -33,6 +35,16 @@ public class InscripcionDetalleDto
     public void setAlumno( AlumnoDto alumno )
     {
         this.alumno = alumno;
+    }
+
+    public Integer getDniTitular()
+    {
+        return dniTitular;
+    }
+
+    public void setDniTitular( Integer dniTitular )
+    {
+        this.dniTitular = dniTitular;
     }
 
     public List<ServicioDto> getServicios()

@@ -116,4 +116,9 @@ public class Factura
         return this.id.equals( facturaId );
     }
 
+    public String getNombreCompletoTitular()
+    {
+        return titular.getNombreCompleto();
+    }
+
 }

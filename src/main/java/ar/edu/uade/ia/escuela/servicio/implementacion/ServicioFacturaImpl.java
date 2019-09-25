@@ -67,7 +67,7 @@ public class ServicioFacturaImpl
             FacturaDto sg = new FacturaDto();
             sg.setId( s.getId() );
             sg.setTotal( s.getTotal() );
-            sg.setTipo( s.getTipo() );
+            sg.setTitular( s.getNombreCompletoTitular() );
             sg.setFecha( s.getFecha() );
             sg.setVencimiento( s.getVencimiento() );
             facturaDto.add( sg );

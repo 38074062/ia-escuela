@@ -79,7 +79,7 @@ public class ItemFactura
 
     public String getDescripcion()
     {
-        return inscripcion.getNombreAlumno() + this.getDetallesServicios();
+        return inscripcion.getNombreAlumno() + "/" + this.getDetallesServicios();
     }
 
     private String getDetallesServicios()
