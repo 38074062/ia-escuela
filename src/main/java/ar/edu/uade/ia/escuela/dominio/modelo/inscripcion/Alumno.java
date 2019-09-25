@@ -1,6 +1,7 @@
 package ar.edu.uade.ia.escuela.dominio.modelo.inscripcion;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.JoinColumn;
@@ -21,7 +22,7 @@ public class Alumno
 
     private Integer dni;
 
-    @ManyToOne
+    @ManyToOne( fetch = FetchType.LAZY )
     @JoinColumn( name = "titular_id", nullable = false )
     private Titular titular;
 

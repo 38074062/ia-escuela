@@ -20,6 +20,7 @@ import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDetalleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionSimpleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioInscripcion;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
@@ -59,7 +60,7 @@ public class ServicioInscripcionImpl
         alumnoActual.setNombre( inscripcionDto.getAlumno().getNombre() );
         alumnoActual.setApellido( inscripcionDto.getAlumno().getApellido() );
         alumnoActual.setDni( inscripcionDto.getAlumno().getDni() );
-        alumnoActual.setTitular(titular);
+        alumnoActual.setTitular( titular );
         Inscripcion inscripcionActual = new Inscripcion();
         inscripcionActual.setId( inscripcionDto.getId() );
         inscripcionActual.setTitular( titular );
@@ -118,6 +119,19 @@ public class ServicioInscripcionImpl
         alumnoDto.setNombre( alumno.getNombre() );
         alumnoDto.setApellido( alumno.getApellido() );
         return alumnoDto;
+    }
+
+    @Override
+    public void modificarInscripcion( InscripcionSimpleDto inscripcionDto )
+    {
+        Optional<Inscripcion> inscripcionOpt = repositorioInscripcion.findById( inscripcionDto.getId() );
+        if ( !inscripcionOpt.isPresent() )
+        {
+            throw new EntidadNoEncontradaException( "La inscripcion ingresada no existe" );
+        }
+        Inscripcion inscripcion = inscripcionOpt.get();
+        inscripcion.setServicios( buscarServiciosPorId( inscripcionDto.getIdServicios() ) );
+        repositorioInscripcion.save( inscripcion );
     }
 
 }

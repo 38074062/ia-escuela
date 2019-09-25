@@ -10,7 +10,8 @@ public enum MensajePresentacion
     FACTURA_CREADA( "Factura creada correctamente" ),
     CARGA_HORARIA_AGREGADA( "Carga horaria registrada correctamente" ),
     TITULAR_CREADO( "Titular creado exitosamente" ),
-    PAGO_REGISTRADO( "Pago registrado exitosamente" );
+    PAGO_REGISTRADO( "Pago registrado exitosamente" ),
+    INSCRIPCION_MODIFICADA( "Inscripción modificada exitosamente" );
 
     private String descripcion;
 
