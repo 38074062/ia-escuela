@@ -142,6 +142,7 @@ public class ServicioTitularImpl
             estado.setFechaVencimiento( item.getFactura().getVencimiento() );
             estado.setMonto( item.getFactura().getTotal() );
             estado.setEstado( item.getEstado().getDescripcion() );
+            estado.setMontoPagado( item.getMonto() );
             facturas.add( estado );
         } );
         return facturas;

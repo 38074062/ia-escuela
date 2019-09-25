@@ -96,7 +96,7 @@ public class ItemCuenta
 
     public void registrarPago( LocalDate fecha, float monto )
     {
-        this.monto = monto;
+        this.monto += monto;
         this.fechaPago = fecha;
     }
 

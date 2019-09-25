@@ -98,7 +98,7 @@ public class Factura
 
     public Boolean estaPagada( float monto )
     {
-        return this.getTotal() == monto;
+        return this.getTotal() <= monto;
     }
 
     public Boolean estaVencida( LocalDate fecha )

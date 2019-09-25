@@ -14,6 +14,8 @@ public class EstadoFacturasDto
 
     private String estado;
 
+    private Float montoPagado;
+
     public EstadoFacturasDto()
     {
         super();
@@ -67,6 +69,16 @@ public class EstadoFacturasDto
     public void setEstado( String estado )
     {
         this.estado = estado;
+    }
+
+    public Float getMontoPagado()
+    {
+        return montoPagado;
+    }
+
+    public void setMontoPagado( Float montoPagado )
+    {
+        this.montoPagado = montoPagado;
     }
 
 }
