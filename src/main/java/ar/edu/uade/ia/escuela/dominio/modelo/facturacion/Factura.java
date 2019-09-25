@@ -3,6 +3,7 @@ package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -107,8 +108,7 @@ public class Factura
 
     public String getDescripcion()
     {
-        // TODO Auto-generated method stub
-        return null;
+        return items.stream().map( ItemFactura::getDescripcion).collect(Collectors.joining("/n"));
     }
 
     public boolean esFactura( Long facturaId )

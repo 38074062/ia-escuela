@@ -80,4 +80,9 @@ public class Alumno
         this.titular = titular;
     }
 
+    public String getNombreCompleto()
+    {
+        return nombre + " " + apellido;
+    }
+
 }

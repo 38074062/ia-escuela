@@ -121,7 +121,7 @@ public class ServicioTitularImpl
     private TitularDetalleDto convertirTitularATitularDetalleDto( Titular titular )
     {
         TitularDetalleDto titularDetalleDto = new TitularDetalleDto();
-		titularDetalleDto.setId( titular.getId() );
+        titularDetalleDto.setId( titular.getId() );
         titularDetalleDto.setDni( titular.getDni() );
         titularDetalleDto.setNombre( titular.getNombre() );
         titularDetalleDto.setApellido( titular.getApellido() );
@@ -137,6 +137,7 @@ public class ServicioTitularImpl
         List<EstadoFacturasDto> facturas = new LinkedList<>();
         cuentaCorriente.getItemsCuentas().forEach( item -> {
             EstadoFacturasDto estado = new EstadoFacturasDto();
+            estado.setIdFactura( item.getFactura().getId() );
             estado.setDetalle( item.getDescripcion() );
             estado.setFechaVencimiento( item.getFactura().getVencimiento() );
             estado.setMonto( item.getFactura().getTotal() );
@@ -154,7 +155,7 @@ public class ServicioTitularImpl
             inscricpionDto.setId( inscripcion.getId() );
             inscricpionDto.setAlumno( convertirAlumnoAAlumnoDto( inscripcion.getAlumno() ) );
             inscricpionDto.setServicios( convertirServiciosAServiciosDto( inscripcion.getServicios() ) );
-			inscripcionesDto.add( inscricpionDto );
+            inscripcionesDto.add( inscricpionDto );
         } );
         return inscripcionesDto;
     }
@@ -164,6 +165,7 @@ public class ServicioTitularImpl
         List<ServicioDto> serviciosDto = new LinkedList<>();
         servicios.forEach( servicio -> {
             ServicioDto servicioDto = new ServicioDto();
+            servicioDto.setId( servicio.getId() );
             servicioDto.setNombre( servicio.getNombre() );
             servicioDto.setTipo( servicio.getTipo() );
             servicioDto.setPrecio( servicio.getPrecio() );
@@ -176,6 +178,7 @@ public class ServicioTitularImpl
     private AlumnoDto convertirAlumnoAAlumnoDto( Alumno alumno )
     {
         AlumnoDto alumnoDto = new AlumnoDto();
+        alumnoDto.setId( alumno.getId() );
         alumnoDto.setDni( alumno.getDni() );
         alumnoDto.setNombre( alumno.getNombre() );
         alumnoDto.setApellido( alumno.getApellido() );

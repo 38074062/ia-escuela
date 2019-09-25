@@ -17,10 +17,10 @@ public class Inscripcion
     extends EntidadBase
 {
     @ManyToOne
-    @JoinColumn(name="titular_id", nullable=false)
+    @JoinColumn( name = "titular_id", nullable = false )
     private Titular titular;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne( cascade = CascadeType.ALL )
     private Alumno alumno;
 
     @ManyToMany
@@ -90,6 +90,11 @@ public class Inscripcion
     public void setActivo( Boolean activo )
     {
         this.activo = activo;
+    }
+
+    public String getNombreAlumno()
+    {
+        return alumno.getNombreCompleto();
     }
 
 }

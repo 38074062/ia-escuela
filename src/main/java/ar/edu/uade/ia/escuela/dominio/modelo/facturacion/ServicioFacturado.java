@@ -13,7 +13,7 @@ public class ServicioFacturado
     extends EntidadBase
 {
     @ManyToOne
-    @JoinColumn(name="item_factura_id", nullable=false)
+    @JoinColumn( name = "item_factura_id", nullable = false )
     private ItemFactura itemFactura;
 
     @OneToOne
@@ -68,4 +68,8 @@ public class ServicioFacturado
         this.montoFacturado = montoFacturado;
     }
 
+    public String getDescripcion()
+    {
+        return nombre + " " + montoFacturado;
+    }
 }

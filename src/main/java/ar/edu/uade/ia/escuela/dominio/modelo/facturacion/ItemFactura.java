@@ -2,6 +2,7 @@ package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -19,13 +20,13 @@ public class ItemFactura
 {
 
     @ManyToOne
-    @JoinColumn(name="factura_id", nullable=false)
+    @JoinColumn( name = "factura_id", nullable = false )
     private Factura factura;
 
     @OneToOne
     private Inscripcion inscripcion;
 
-    @OneToMany( mappedBy = "itemFactura",cascade = CascadeType.ALL )
+    @OneToMany( mappedBy = "itemFactura", cascade = CascadeType.ALL )
     private List<ServicioFacturado> serviciosFacturados;
 
     public Factura getFactura()
@@ -76,4 +77,13 @@ public class ItemFactura
         return serviciosFacturados.stream().map( ServicioFacturado::getMontoFacturado ).reduce( Float::sum ).orElse( 0F );
     }
 
+    public String getDescripcion()
+    {
+        return inscripcion.getNombreAlumno() + this.getDetallesServicios();
+    }
+
+    private String getDetallesServicios()
+    {
+        return serviciosFacturados.stream().map( ServicioFacturado::getDescripcion ).collect( Collectors.joining( "-" ) );
+    }
 }
