@@ -150,7 +150,7 @@ public class ServicioUsuarioImpl
     @Override
     public List<EmpleadoDto> getEmpleados()
     {
-        return convertirUsuariosAEmpleadosDto( repositorioUsuario.findAll() );
+        return convertirUsuariosAEmpleadosDto( repositorioUsuario.findEmpleados() );
     }
 
     private List<EmpleadoDto> convertirUsuariosAEmpleadosDto( List<Usuario> usuarios )
