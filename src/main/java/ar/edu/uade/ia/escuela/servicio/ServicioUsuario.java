@@ -19,4 +19,8 @@ public interface ServicioUsuario
     public List<EmpleadoDto> getEmpleados();
 
     public void agregarCargaHoraria( ReciboDto recibo );
+
+    public void modificarUsuario( RegistroUsuarioDto usuarioDto );
+
+    public void eliminarUsuario( Long id );
 }

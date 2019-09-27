@@ -62,7 +62,6 @@ public class ServicioInscripcionImpl
         alumnoActual.setDni( inscripcionDto.getAlumno().getDni() );
         alumnoActual.setTitular( titular );
         Inscripcion inscripcionActual = new Inscripcion();
-        inscripcionActual.setId( inscripcionDto.getId() );
         inscripcionActual.setTitular( titular );
         inscripcionActual.setAlumno( alumnoActual );
         inscripcionActual.setServicios( buscarServiciosPorId( inscripcionDto.getIdServicios() ) );
@@ -105,6 +104,7 @@ public class ServicioInscripcionImpl
         List<ServicioDto> serviciosDto = new LinkedList<>();
         servicios.forEach( servicio -> {
             ServicioDto servicioDto = new ServicioDto();
+            servicioDto.setId( servicio.getId() );
             servicioDto.setNombre( servicio.getNombre() );
             servicioDto.setTipo( servicio.getTipo() );
             servicioDto.setPrecio( servicio.getPrecio() );
@@ -117,6 +117,7 @@ public class ServicioInscripcionImpl
     private AlumnoDto convertirAlumnoAAlumnoDto( Alumno alumno )
     {
         AlumnoDto alumnoDto = new AlumnoDto();
+        alumnoDto.setId( alumno.getId() );
         alumnoDto.setDni( alumno.getDni() );
         alumnoDto.setNombre( alumno.getNombre() );
         alumnoDto.setApellido( alumno.getApellido() );
@@ -134,6 +135,20 @@ public class ServicioInscripcionImpl
         Inscripcion inscripcion = inscripcionOpt.get();
         inscripcion.setServicios( buscarServiciosPorId( inscripcionDto.getIdServicios() ) );
         repositorioInscripcion.save( inscripcion );
+    }
+
+    @Override
+    public void eliminarInscripcion( Long idInscripcion )
+    {
+        Optional<Inscripcion> optInscripcion = repositorioInscripcion.findById( idInscripcion );
+        if ( !optInscripcion.isPresent() )
+        {
+            throw new EntidadNoEncontradaException( "La inscripcion ingresada no existe" );
+        }
+        Inscripcion inscripcion = optInscripcion.get();
+        inscripcion.setActivo( false );
+        repositorioInscripcion.save( inscripcion );
+        repositorioInscripcion.deleteById( idInscripcion );
     }
 
 }

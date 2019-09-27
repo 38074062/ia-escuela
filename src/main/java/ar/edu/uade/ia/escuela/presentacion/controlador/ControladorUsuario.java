@@ -3,8 +3,11 @@ package ar.edu.uade.ia.escuela.presentacion.controlador;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,6 +17,7 @@ import ar.edu.uade.ia.escuela.presentacion.dto.EmpleadoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ReciboDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RegistroUsuarioDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
 import ar.edu.uade.ia.escuela.servicio.error.CargoInexistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
@@ -77,6 +81,43 @@ public class ControladorUsuario
         {
             respuesta.setMensaje( ene.getMessage() );
             respuesta.setEstado( false );
+        }
+        return respuesta;
+    }
+
+    @DeleteMapping( "/empleados/{id}" )
+    public RespuestaApiDto<Object> bajaEmpleado( @PathVariable( name = "id" ) Long id )
+    {
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
+        try
+        {
+            servicioUsuario.eliminarUsuario( id );
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.USUARIO_BORRADO.getDescripcion() );
+
+        }
+        catch ( EntidadNoEncontradaException e )
+        {
+            respuesta.setEstado( false );
+            respuesta.setMensaje( e.getMessage() );
+        }
+        return respuesta;
+    }
+
+    @PutMapping( "/empleados" )
+    public RespuestaApiDto<Object> modificarUsuario( @RequestBody RegistroUsuarioDto usuario )
+    {
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
+        try
+        {
+            servicioUsuario.modificarUsuario( usuario );
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.USUARIO_MODIFICADO.getDescripcion() );
+        }
+        catch ( EntidadNoEncontradaException e )
+        {
+            respuesta.setEstado( false );
+            respuesta.setMensaje( e.getMessage() );
         }
         return respuesta;
     }

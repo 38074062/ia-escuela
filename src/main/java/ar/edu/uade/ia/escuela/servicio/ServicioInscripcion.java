@@ -14,4 +14,5 @@ public interface ServicioInscripcion
 
     public void modificarInscripcion( InscripcionSimpleDto inscripcion );
 
+    public void eliminarInscripcion( Long idInscripcion );
 }

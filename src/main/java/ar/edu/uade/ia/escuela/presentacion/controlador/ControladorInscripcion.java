@@ -3,7 +3,9 @@ package ar.edu.uade.ia.escuela.presentacion.controlador;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,4 +71,21 @@ public class ControladorInscripcion
         return respuesta;
     }
 
+    @DeleteMapping("/inscripcion/{id}")
+    public RespuestaApiDto<Object> bajaServicio( @PathVariable( name = "id" ) Long id )
+    {
+        RespuestaApiDto<Object> respuesta = new RespuestaApiDto<Object>();
+        try
+        {
+            servicioInscripcion.eliminarInscripcion( id );
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.INSCRIPCION_ELIMINADA.getDescripcion() );
+        }
+        catch ( EntidadNoEncontradaException e )
+        {
+            respuesta.setEstado( false );
+            respuesta.setMensaje( e.getMessage() );
+        }
+        return respuesta;
+    }
 }

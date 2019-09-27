@@ -196,4 +196,54 @@ public class ServicioUsuarioImpl
         recibo.setHoras( reciboDto.getHoras() );
         return recibo;
     }
+
+    @Override
+    public void modificarUsuario( RegistroUsuarioDto usuarioDto )
+    {
+        Optional<Usuario> usuarioOpt = repositorioUsuario.findById( usuarioDto.getId() );
+        if ( !usuarioOpt.isPresent() )
+        {
+            throw new EntidadNoEncontradaException( "El usuario ingresado no existe" );
+        }
+        Usuario usuario = usuarioOpt.get();
+        if ( !usuario.getNombreUsuario().equals( usuarioDto.getNombreUsuario() ) )
+        {
+            if ( repositorioUsuario.findByNombreUsuario( usuarioDto.getNombreUsuario() ) != null )
+            {
+                throw new NombreDeUsuarioExistenteException();
+            }
+        }
+        if ( !usuario.getDni().equals( usuarioDto.getDni() ) )
+        {
+            if ( repositorioUsuario.findByDni( usuarioDto.getDni() ) != null )
+            {
+                throw new DniExistenteException();
+            }
+        }
+        try
+        {
+            usuario.setCargo( Cargo.getCargoPorCodigo( usuarioDto.getCargo() ) );
+        }
+        catch ( IllegalArgumentException iae )
+        {
+            throw new CargoInexistenteException();
+        }
+        usuario.setNombre( usuarioDto.getNombre() );
+        usuario.setApellido( usuarioDto.getApellido() );
+        usuario.setNombreUsuario( usuarioDto.getNombreUsuario() );
+        usuario.setDni( usuarioDto.getDni() );
+        usuario.setCuit( usuarioDto.getCuit() );
+        repositorioUsuario.save( usuario );
+    }
+
+    @Override
+    public void eliminarUsuario( Long id )
+    {
+        if ( !repositorioUsuario.findById( id ).isPresent() )
+        {
+            throw new EntidadNoEncontradaException( "El usuario ingresado no existe" );
+        }
+        repositorioUsuario.deleteById( id );
+
+    }
 }

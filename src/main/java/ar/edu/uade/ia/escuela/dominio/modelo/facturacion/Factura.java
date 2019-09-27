@@ -12,6 +12,7 @@ import javax.persistence.OneToOne;
 
 import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
+import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 
 @Entity
@@ -85,12 +86,13 @@ public class Factura
         ItemFactura itemFactura = new ItemFactura();
         itemFactura.setInscripcion( inscripcion );
         List<ServicioFacturado> serviciosFacturados = new LinkedList<>();
-        inscripcion.getServicios().forEach( servicio -> {
+        for(Servicio servicio : inscripcion.getServicios()) {
             ServicioFacturado servicioFacturado = new ServicioFacturado();
             servicioFacturado.setNombre( servicio.getNombre() );
             servicioFacturado.setMontoFacturado( servicio.getCuota( cantidadCuotas ) );
-            serviciosFacturados.add( servicioFacturado );
-        } );
+            serviciosFacturados.add( servicioFacturado );    
+        }
+        
         itemFactura.setServiciosFacturados( serviciosFacturados );
         itemFactura.setFactura( this );
         items.add( itemFactura );

@@ -70,13 +70,21 @@ public class ServicioTitularImpl
     @Override
     public void modificarTitular( TitularDto titularDto )
     {
-        if ( repositorioTitular.findByDni( titularDto.getDni() ) != null )
+        Optional<Titular> titularOpt = repositorioTitular.findById( titularDto.getId() );
+        if ( !titularOpt.isPresent() )
         {
             throw new EntidadNoEncontradaException( "El titular no existe" );
         }
-        Titular titularGuardado = new Titular();
+        Titular titularGuardado = titularOpt.get();
         titularGuardado.setNombre( titularDto.getNombre() );
         titularGuardado.setApellido( titularDto.getApellido() );
+        if ( !titularDto.getDni().equals( titularGuardado.getDni() ) )
+        {
+            if ( repositorioTitular.findByDni( titularDto.getDni() ).isPresent() )
+            {
+                throw new DniExistenteException();
+            }
+        }
         titularGuardado.setDni( titularDto.getDni() );
         titularGuardado.setDireccion( titularDto.getDireccion() );
         titularGuardado.setEmail( titularDto.getEmail() );
@@ -127,7 +135,7 @@ public class ServicioTitularImpl
         titularDetalleDto.setApellido( titular.getApellido() );
         titularDetalleDto.setDireccion( titular.getDireccion() );
         titularDetalleDto.setEmail( titular.getEmail() );
-        titularDetalleDto.setInscripciones( convertirInscripcionesAInscripcionesDetalleDto( titular.getInscripciones() ) );
+        titularDetalleDto.setInscripciones( convertirInscripcionesAInscripcionesDetalleDto( titular.getInscripcionesActivas() ) );
         titularDetalleDto.setFacturas( convertirFacturasAEstadoFacturasDto( titular.getCuentaCorriente() ) );
         return titularDetalleDto;
     }

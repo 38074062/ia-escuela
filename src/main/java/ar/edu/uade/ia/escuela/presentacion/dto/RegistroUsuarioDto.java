@@ -2,6 +2,7 @@ package ar.edu.uade.ia.escuela.presentacion.dto;
 
 public class RegistroUsuarioDto
 {
+    private Long id;
 
     private String nombre;
 
@@ -14,13 +15,23 @@ public class RegistroUsuarioDto
     private Integer dni;
 
     private Integer cargo;
-    
+
     public RegistroUsuarioDto()
     {
 
     }
 
-	public String getNombre()
+    public Long getId()
+    {
+        return id;
+    }
+
+    public void setId( Long id )
+    {
+        this.id = id;
+    }
+
+    public String getNombre()
     {
         return nombre;
     }
