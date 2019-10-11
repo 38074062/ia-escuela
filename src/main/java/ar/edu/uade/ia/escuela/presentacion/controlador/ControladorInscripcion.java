@@ -3,6 +3,7 @@ package ar.edu.uade.ia.escuela.presentacion.controlador;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,6 +22,7 @@ import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 
 @RestController
+@CrossOrigin
 public class ControladorInscripcion
 {
     @Autowired

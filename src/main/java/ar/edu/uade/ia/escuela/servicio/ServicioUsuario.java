@@ -23,4 +23,6 @@ public interface ServicioUsuario
     public void modificarUsuario( RegistroUsuarioDto usuarioDto );
 
     public void eliminarUsuario( Long id );
+    
+    public void calcularSueldos();
 }

@@ -246,4 +246,14 @@ public class ServicioUsuarioImpl
         repositorioUsuario.deleteById( id );
 
     }
+
+    @Override
+    public void calcularSueldos()
+    {
+        List<Usuario> usuarios = repositorioUsuario.findAll();
+        usuarios.stream().forEach( empleado -> {
+            
+        } );
+
+    }
 }

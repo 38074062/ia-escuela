@@ -1,14 +1,29 @@
 package ar.edu.uade.ia.escuela.servicio.implementacion;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioTitular;
 import ar.edu.uade.ia.escuela.dominio.error.FacturaNoEncontradaException;
@@ -25,8 +40,12 @@ import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDetalleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
+import ar.edu.uade.ia.escuela.servicio.cliente.RequestBanco;
+import ar.edu.uade.ia.escuela.servicio.cliente.RespuestaBanco;
+import ar.edu.uade.ia.escuela.servicio.cliente.RespuestaTarjetaCredito;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
+import ar.edu.uade.ia.escuela.servicio.error.ErrorPagoException;
 
 @Service
 @Transactional
@@ -36,6 +55,18 @@ public class ServicioTitularImpl
 
     @Autowired
     private RepositorioTitular repositorioTitular;
+
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Value( "${cbu}" )
+    private String cbuEscuela;
+
+    @Value( "${endpointTarjeta}" )
+    private String urlTarjeta;
+
+    @Value( "${endpointBanco}" )
+    private String urlBanco;
 
     @Override
     public void altaTitular( TitularDto titularDto )
@@ -205,6 +236,15 @@ public class ServicioTitularImpl
         Titular titular = titularOpt.get();
         try
         {
+            informarEntidadBanco( titular, pagoDto );
+        }
+        catch ( JsonProcessingException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        try
+        {
             titular.registrarPago( pagoDto.getFacturaId(), pagoDto.getFecha(), pagoDto.getMonto() );
             repositorioTitular.save( titular );
         }
@@ -212,5 +252,41 @@ public class ServicioTitularImpl
         {
             throw new EntidadNoEncontradaException( fne.getMessage() );
         }
+    }
+
+    private void informarEntidadTarjeta( Titular titular, PagoDto pagoDto )
+    {
+        // TODO
+        RespuestaTarjetaCredito respuesta =
+            restTemplate.postForObject( urlTarjeta, pagoDto, RespuestaTarjetaCredito.class );
+
+    }
+
+    private void informarEntidadBanco( Titular titular, PagoDto pagoDto )
+        throws JsonProcessingException
+    {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType( MediaType.APPLICATION_JSON );
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl( urlBanco ).queryParam( "movimientos",
+            new ObjectMapper().writeValueAsString( crearObjetoMovimiento( titular.getCuentaCorriente().getCuentaBancaria(),
+                                                                            pagoDto ) )
+            ).queryParam( "user", "instituto" ).queryParam( "origenMovimiento", "debito" );
+        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>( headers );
+        ResponseEntity<Object> response =
+            restTemplate.exchange( builder.toUriString(), HttpMethod.POST, entity, Object.class );
+        if ( !response.equals( "Ok" ) )
+        {
+            throw new ErrorPagoException();
+        }
+    }
+
+    private RequestBanco crearObjetoMovimiento( String cuentaBancaria, PagoDto pagoDto )
+    {
+        RequestBanco request = new RequestBanco();
+        request.setCbuOrigen( "1230022000119" );
+        request.setCbuDestino( cbuEscuela );
+        request.setMonto( pagoDto.getMonto() );
+        request.setDescripcion( "Pago cuota" );
+        return request;
     }
 }

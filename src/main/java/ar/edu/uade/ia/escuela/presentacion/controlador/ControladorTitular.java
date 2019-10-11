@@ -3,6 +3,7 @@ package ar.edu.uade.ia.escuela.presentacion.controlador;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import ar.edu.uade.ia.escuela.presentacion.MensajePresentacion;
 import ar.edu.uade.ia.escuela.presentacion.dto.PagoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RespuestaApiDto;
-import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDetalleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
@@ -22,6 +22,7 @@ import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 
 @RestController
+@CrossOrigin
 public class ControladorTitular
 {
     @Autowired
@@ -80,6 +81,7 @@ public class ControladorTitular
             servicioTitular.registrarPago(pagoDto);
             respuesta.setEstado( true );
             respuesta.setMensaje( MensajePresentacion.PAGO_REGISTRADO.getDescripcion() );
+            
         }
         catch ( EntidadNoEncontradaException ene )
         {
