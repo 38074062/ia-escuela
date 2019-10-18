@@ -32,12 +32,7 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
 				.cors().and()
 				.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.GET,"/").permitAll()
-                    .antMatchers(HttpMethod.POST, "/login").permitAll()
-                    .antMatchers(HttpMethod.POST, "/registrarse").permitAll()
-                    .antMatchers(HttpMethod.GET, "/cargos").permitAll()
-                    .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
-				.anyRequest().authenticated().and()
+				.anyRequest().permitAll().and()
 				.addFilterBefore(new FiltroAutenticacionJWT(authenticationManager()),
 						UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(filtroAutorizacionJWTBean(), UsernamePasswordAuthenticationFilter.class);

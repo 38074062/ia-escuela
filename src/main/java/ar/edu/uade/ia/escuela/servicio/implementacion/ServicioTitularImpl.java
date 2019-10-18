@@ -1,5 +1,8 @@
 package ar.edu.uade.ia.escuela.servicio.implementacion;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URI;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -20,6 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -41,6 +45,7 @@ import ar.edu.uade.ia.escuela.presentacion.dto.TitularDetalleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
 import ar.edu.uade.ia.escuela.servicio.cliente.RequestBanco;
+import ar.edu.uade.ia.escuela.servicio.cliente.RequestTarjeta;
 import ar.edu.uade.ia.escuela.servicio.cliente.RespuestaBanco;
 import ar.edu.uade.ia.escuela.servicio.cliente.RespuestaTarjetaCredito;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
@@ -236,7 +241,7 @@ public class ServicioTitularImpl
         Titular titular = titularOpt.get();
         try
         {
-            informarEntidadBanco( titular, pagoDto );
+            informarEntidadTarjeta( titular, pagoDto );
         }
         catch ( JsonProcessingException e )
         {
@@ -254,12 +259,28 @@ public class ServicioTitularImpl
         }
     }
 
-    private void informarEntidadTarjeta( Titular titular, PagoDto pagoDto )
+    private void informarEntidadTarjeta( Titular titular, PagoDto pagoDto ) throws JsonProcessingException
     {
-        // TODO
-        RespuestaTarjetaCredito respuesta =
-            restTemplate.postForObject( urlTarjeta, pagoDto, RespuestaTarjetaCredito.class );
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType( MediaType.APPLICATION_JSON );
+        HttpEntity<String> request;
+        request = new HttpEntity<String>(new ObjectMapper().writeValueAsString(crearObjetoTarjeta(titular,pagoDto)), headers);
+        ResponseEntity<String> response = restTemplate.exchange(
+                                                                urlTarjeta, HttpMethod.POST, request, String.class);
+        
+            
 
+    }
+
+    private RequestTarjeta crearObjetoTarjeta( Titular titular, PagoDto pagoDto )
+    {
+        RequestTarjeta request = new RequestTarjeta();
+        request.setNroTarjeta( "9345572142215307" );
+        request.setCodSeg("342");
+        request.setMonto(String.valueOf(pagoDto.getMonto()));
+        request.setIdEntidad("1");
+        request.setCuotas( "1" );
+        return request;
     }
 
     private void informarEntidadBanco( Titular titular, PagoDto pagoDto )
@@ -267,13 +288,30 @@ public class ServicioTitularImpl
     {
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType( MediaType.APPLICATION_JSON );
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl( urlBanco ).queryParam( "movimientos",
-            new ObjectMapper().writeValueAsString( crearObjetoMovimiento( titular.getCuentaCorriente().getCuentaBancaria(),
-                                                                            pagoDto ) )
-            ).queryParam( "user", "instituto" ).queryParam( "origenMovimiento", "debito" );
-        HttpEntity<MultiValueMap<String, Object>> entity = new HttpEntity<>( headers );
-        ResponseEntity<Object> response =
-            restTemplate.exchange( builder.toUriString(), HttpMethod.POST, entity, Object.class );
+        String movimientos =
+            "[" + new ObjectMapper().writeValueAsString( crearObjetoMovimiento( titular.getCuentaCorriente().getCuentaBancaria(),
+                                                                                pagoDto ) )
+                            + "]";
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
+        params.set("movimientos",movimientos);
+        params.set("user","instituto");
+        params.set("origenMovimiento","debito");
+
+        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(urlBanco).queryParams(params);
+        String url;
+        url = builder.build().toUri().toString();
+        try
+        {
+            url = URLDecoder.decode(url, "UTF-8");
+        }
+        catch ( UnsupportedEncodingException e )
+        {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        String response = restTemplate.postForObject( url,"",  String.class );
+        
         if ( !response.equals( "Ok" ) )
         {
             throw new ErrorPagoException();
