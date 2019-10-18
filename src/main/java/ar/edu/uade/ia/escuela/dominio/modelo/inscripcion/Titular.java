@@ -35,6 +35,8 @@ public class Titular
     private CuentaCorriente cuentaCorriente;
 
     private String preferenciaTipoFactura;
+    
+    private String preferenciaPago;
 
     public Titular()
     {
@@ -120,6 +122,14 @@ public class Titular
     {
         this.preferenciaTipoFactura = preferenciaTipoFactura;
     }
+    
+    public String getPreferenciaPago() {
+		return preferenciaPago;
+	}
+
+	public void setPreferenciaPago(String preferenciaPago) {
+		this.preferenciaPago = preferenciaPago;
+	}
 
     public List<Inscripcion> getInscripcionesActivas()
     {
@@ -131,7 +141,7 @@ public class Titular
         this.cuentaCorriente.agregarFactura( factura );
     }
 
-    public void registrarPago( Long facturaId, LocalDate fecha, float monto )
+	public void registrarPago( Long facturaId, LocalDate fecha, float monto )
     {
         cuentaCorriente.registrarPago( facturaId, fecha, monto );
 
