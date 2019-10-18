@@ -84,7 +84,11 @@ public class ServicioTitularImpl
         titular.setEmail( titularDto.getEmail() );
         CuentaCorriente cuenta = new CuentaCorriente();
         cuenta.setCuentaBancaria( titularDto.getCuentaBancaria() );
+        cuenta.setNroTarjeta(titularDto.getNroTarjeta());
+        cuenta.setCodSeg(titularDto.getCodSeg());
         titular.setCuentaCorriente( cuenta );
+        titular.setPreferenciaPago(titularDto.getPreferenciaPago());
+        titular.setPreferenciaTipoFactura(titularDto.getPreferenciaTipoFactura());
         repositorioTitular.save( titular );
     }
 
@@ -121,8 +125,12 @@ public class ServicioTitularImpl
         titularGuardado.setEmail( titularDto.getEmail() );
         if ( titularGuardado.getCuentaCorriente() != null )
         {
-            titularGuardado.getCuentaCorriente().setCuentaBancaria( titularDto.getCuentaBancaria() );
+            titularGuardado.getCuentaCorriente().setCuentaBancaria( titularDto.getCuentaBancaria());
+            titularGuardado.getCuentaCorriente().setNroTarjeta(titularDto.getNroTarjeta());
+            titularGuardado.getCuentaCorriente().setCodSeg(titularDto.getCodSeg());
         }
+        titularGuardado.setPreferenciaPago(titularDto.getPreferenciaPago());
+        titularGuardado.setPreferenciaTipoFactura(titularDto.getPreferenciaTipoFactura());
         repositorioTitular.save( titularGuardado );
     }
 
@@ -141,6 +149,8 @@ public class ServicioTitularImpl
             sg.setDireccion( s.getDireccion() );
             sg.setEmail( s.getEmail() );
             sg.setCuentaBancaria( s.getCuentaCorriente().getCuentaBancaria() );
+            sg.setPreferenciaPago(s.getPreferenciaPago());
+            sg.setPreferenciaTipoFactura(s.getPreferenciaTipoFactura());
             titularDto.add( sg );
         }
         return titularDto;
@@ -168,6 +178,8 @@ public class ServicioTitularImpl
         titularDetalleDto.setEmail( titular.getEmail() );
         titularDetalleDto.setInscripciones( convertirInscripcionesAInscripcionesDetalleDto( titular.getInscripcionesActivas() ) );
         titularDetalleDto.setFacturas( convertirFacturasAEstadoFacturasDto( titular.getCuentaCorriente() ) );
+        titularDetalleDto.setPreferenciaPago(titular.getPreferenciaPago());
+        titularDetalleDto.setPreferenciaTipoFactura(titular.getPreferenciaTipoFactura());
         return titularDetalleDto;
     }
 
@@ -234,14 +246,26 @@ public class ServicioTitularImpl
             throw new EntidadNoEncontradaException( "El titular no existe" );
         }
         Titular titular = titularOpt.get();
-        try
-        {
-            informarEntidadBanco( titular, pagoDto );
-        }
-        catch ( JsonProcessingException e )
-        {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        if(titular.getPreferenciaPago()=="banco"){
+        	try
+        	{
+        		informarEntidadBanco( titular, pagoDto );
+        	}
+        	catch ( JsonProcessingException e )
+        	{
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	}
+        }else{
+        	try
+        	{
+        		informarEntidadTarjeta( titular, pagoDto);
+        	}
+        	catch ( JsonProcessingException e )
+        	{
+        		// TODO Auto-generated catch block
+        		e.printStackTrace();
+        	}
         }
         try
         {
@@ -254,14 +278,7 @@ public class ServicioTitularImpl
         }
     }
 
-    private void informarEntidadTarjeta( Titular titular, PagoDto pagoDto )
-    {
-        // TODO
-        RespuestaTarjetaCredito respuesta =
-            restTemplate.postForObject( urlTarjeta, pagoDto, RespuestaTarjetaCredito.class );
-
-    }
-
+    
     private void informarEntidadBanco( Titular titular, PagoDto pagoDto )
         throws JsonProcessingException
     {

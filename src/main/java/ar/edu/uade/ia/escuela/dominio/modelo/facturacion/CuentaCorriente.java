@@ -20,8 +20,12 @@ public class CuentaCorriente
     private List<ItemCuenta> itemsCuentas = new LinkedList<ItemCuenta>();
 
     private String cuentaBancaria;
+    
+    private String nroTarjeta;
+    
+    private String codSeg;
 
-    public CuentaCorriente()
+	public CuentaCorriente()
     {
         super();
     }
@@ -58,6 +62,22 @@ public class CuentaCorriente
     {
         this.cuentaBancaria = cuentaBancaria;
     }
+    
+    public String getNroTarjeta() {
+		return nroTarjeta;
+	}
+
+	public void setNroTarjeta(String nroTarjeta) {
+		this.nroTarjeta = nroTarjeta;
+	}
+	
+	public String getCodSeg() {
+		return codSeg;
+	}
+
+	public void setCodSeg(String codSeg) {
+		this.codSeg = codSeg;
+	}
 
     public float estadoCuenta()
     {

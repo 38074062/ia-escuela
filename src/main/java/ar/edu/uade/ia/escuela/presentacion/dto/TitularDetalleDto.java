@@ -15,6 +15,10 @@ public class TitularDetalleDto
     private String direccion;
 
     private String email;
+    
+    private String preferenciaTipoFactura;
+    
+    private String preferenciaPago;
 
     private List<InscripcionDetalleDto> inscripciones;
 
@@ -105,4 +109,20 @@ public class TitularDetalleDto
         this.facturas = facturas;
     }
 
+	public String getPreferenciaTipoFactura() {
+		return preferenciaTipoFactura;
+	}
+
+	public void setPreferenciaTipoFactura(String preferenciaTipoFactura) {
+		this.preferenciaTipoFactura = preferenciaTipoFactura;
+	}
+
+	public String getPreferenciaPago() {
+		return preferenciaPago;
+	}
+
+	public void setPreferenciaPago(String preferenciaPago) {
+		this.preferenciaPago = preferenciaPago;
+	}
+    
 }
