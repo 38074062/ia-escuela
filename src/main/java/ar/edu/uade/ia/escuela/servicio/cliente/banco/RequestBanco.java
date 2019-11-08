@@ -1,4 +1,4 @@
-package ar.edu.uade.ia.escuela.servicio.cliente;
+package ar.edu.uade.ia.escuela.servicio.cliente.banco;
 
 public class RequestBanco
 {

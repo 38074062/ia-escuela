@@ -1,21 +1,26 @@
 package ar.edu.uade.ia.escuela.servicio.implementacion;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioRol;
 import ar.edu.uade.ia.escuela.datos.RepositorioUsuario;
@@ -29,6 +34,9 @@ import ar.edu.uade.ia.escuela.presentacion.dto.EmpleadoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ReciboDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.RegistroUsuarioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
+import ar.edu.uade.ia.escuela.servicio.cliente.banco.PagoBanco;
+import ar.edu.uade.ia.escuela.servicio.cliente.banco.PagoBancoException;
+import ar.edu.uade.ia.escuela.servicio.cliente.banco.RequestBanco;
 import ar.edu.uade.ia.escuela.servicio.error.CargoInexistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
@@ -40,6 +48,8 @@ public class ServicioUsuarioImpl
     implements ServicioUsuario
 {
     private static final String DEFAULT_PASSWORD = "1234";
+    
+    private static final Logger LOG = Logger.getGlobal();
 
     @Autowired
     private RepositorioUsuario repositorioUsuario;
@@ -49,6 +59,12 @@ public class ServicioUsuarioImpl
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+
+    @Autowired
+    private PagoBanco pagoBanco;
+
+    @Value( "${cbu}" )
+    private String cbuEscuela;
 
     @Override
     public UserDetails loadUserByUsername( String nombreUsuario )
@@ -121,6 +137,7 @@ public class ServicioUsuarioImpl
         usuario.setDni( usuarioDto.getDni() );
         usuario.setCuit( usuarioDto.getCuit() );
         usuario.setRoles( establecerRolSegunCargo( usuario.getCargo() ) );
+        usuario.setCbu( usuarioDto.getCbu() );
         repositorioUsuario.save( usuario );
     }
 
@@ -170,6 +187,7 @@ public class ServicioUsuarioImpl
         empleado.setCuit( usuario.getCuit() );
         empleado.setNombreUsuario( usuario.getNombreUsuario() );
         empleado.setCargo( usuario.getCargo().getNombre() );
+        empleado.setCbu( usuario.getCbu() );
         return empleado;
     }
 
@@ -248,12 +266,29 @@ public class ServicioUsuarioImpl
     }
 
     @Override
-    public void calcularSueldos()
+    public void liquidarSueldos()
     {
+        List<RequestBanco> liquidaciones = new LinkedList<>();
         List<Usuario> usuarios = repositorioUsuario.findAll();
         usuarios.stream().forEach( empleado -> {
-            
+            RequestBanco requestBanco = new RequestBanco();
+            requestBanco.setCbuOrigen( cbuEscuela );
+            requestBanco.setCbuDestino( empleado.getCbu() );
+            requestBanco.setDescripcion( "Pago mes " + LocalDate.now().getMonth().getValue() );
+            requestBanco.setMonto( empleado.calcularSueldo() );
+            liquidaciones.add( requestBanco );
         } );
-
+        try
+        {
+            pagoBanco.registrarPagoSueldos(liquidaciones);
+        }
+        catch ( JsonProcessingException e )
+        {
+            LOG.severe( e.getMessage() );
+        }
+        catch ( PagoBancoException e )
+        {
+            LOG.severe( e.getMessage() );
+        }
     }
 }

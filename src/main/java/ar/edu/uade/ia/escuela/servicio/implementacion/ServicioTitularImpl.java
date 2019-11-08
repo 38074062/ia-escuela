@@ -1,37 +1,23 @@
 package ar.edu.uade.ia.escuela.servicio.implementacion;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URI;
-import java.net.URLDecoder;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
-import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponents;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 import ar.edu.uade.ia.escuela.datos.RepositorioTitular;
 import ar.edu.uade.ia.escuela.dominio.error.FacturaNoEncontradaException;
 import ar.edu.uade.ia.escuela.dominio.modelo.facturacion.CuentaCorriente;
+import ar.edu.uade.ia.escuela.dominio.modelo.facturacion.MetodoPago;
+import ar.edu.uade.ia.escuela.dominio.modelo.facturacion.TarjetaCredito;
+import ar.edu.uade.ia.escuela.dominio.modelo.facturacion.TransferenciaBancaria;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Alumno;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Inscripcion;
 import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Servicio;
@@ -39,18 +25,23 @@ import ar.edu.uade.ia.escuela.dominio.modelo.inscripcion.Titular;
 import ar.edu.uade.ia.escuela.presentacion.dto.AlumnoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.EstadoFacturasDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.InscripcionDetalleDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.MetodoPagoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.PagoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.ServicioDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.TarjetaCreditoDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDetalleDto;
 import ar.edu.uade.ia.escuela.presentacion.dto.TitularDto;
+import ar.edu.uade.ia.escuela.presentacion.dto.TransferenciaBancariaDto;
+import ar.edu.uade.ia.escuela.servicio.MensajeServicio;
 import ar.edu.uade.ia.escuela.servicio.ServicioTitular;
-import ar.edu.uade.ia.escuela.servicio.cliente.RequestBanco;
-import ar.edu.uade.ia.escuela.servicio.cliente.RequestTarjeta;
-import ar.edu.uade.ia.escuela.servicio.cliente.RespuestaBanco;
-import ar.edu.uade.ia.escuela.servicio.cliente.RespuestaTarjetaCredito;
+import ar.edu.uade.ia.escuela.servicio.cliente.banco.PagoBanco;
+import ar.edu.uade.ia.escuela.servicio.cliente.banco.PagoBancoException;
+import ar.edu.uade.ia.escuela.servicio.cliente.tarjeta.PagoTarjeta;
+import ar.edu.uade.ia.escuela.servicio.cliente.tarjeta.PagoTarjetaException;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
 import ar.edu.uade.ia.escuela.servicio.error.ErrorPagoException;
+import ar.edu.uade.ia.escuela.servicio.reglas.MetodoPagoRegla;
 
 @Service
 @Transactional
@@ -62,16 +53,10 @@ public class ServicioTitularImpl
     private RepositorioTitular repositorioTitular;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private PagoBanco pagoBanco;
 
-    @Value( "${cbu}" )
-    private String cbuEscuela;
-
-    @Value( "${endpointTarjeta}" )
-    private String urlTarjeta;
-
-    @Value( "${endpointBanco}" )
-    private String urlBanco;
+    @Autowired
+    private PagoTarjeta pagoTarjeta;
 
     @Override
     public void altaTitular( TitularDto titularDto )
@@ -88,12 +73,8 @@ public class ServicioTitularImpl
         titular.setDireccion( titularDto.getDireccion() );
         titular.setEmail( titularDto.getEmail() );
         CuentaCorriente cuenta = new CuentaCorriente();
-        cuenta.setCuentaBancaria( titularDto.getCuentaBancaria() );
-        cuenta.setNroTarjeta(titularDto.getNroTarjeta());
-        cuenta.setCodSeg(titularDto.getCodSeg());
+        cuenta.setMetodoPago( convertirMetodoPagoDtoAMetodoPago( titularDto.getMetodoPago() ) );
         titular.setCuentaCorriente( cuenta );
-        titular.setPreferenciaPago(titularDto.getPreferenciaPago());
-        titular.setPreferenciaTipoFactura(titularDto.getPreferenciaTipoFactura());
         repositorioTitular.save( titular );
     }
 
@@ -130,12 +111,8 @@ public class ServicioTitularImpl
         titularGuardado.setEmail( titularDto.getEmail() );
         if ( titularGuardado.getCuentaCorriente() != null )
         {
-            titularGuardado.getCuentaCorriente().setCuentaBancaria( titularDto.getCuentaBancaria());
-            titularGuardado.getCuentaCorriente().setNroTarjeta(titularDto.getNroTarjeta());
-            titularGuardado.getCuentaCorriente().setCodSeg(titularDto.getCodSeg());
+            titularGuardado.getCuentaCorriente().setMetodoPago( convertirMetodoPagoDtoAMetodoPago( titularDto.getMetodoPago() ) );
         }
-        titularGuardado.setPreferenciaPago(titularDto.getPreferenciaPago());
-        titularGuardado.setPreferenciaTipoFactura(titularDto.getPreferenciaTipoFactura());
         repositorioTitular.save( titularGuardado );
     }
 
@@ -153,9 +130,6 @@ public class ServicioTitularImpl
             sg.setApellido( s.getApellido() );
             sg.setDireccion( s.getDireccion() );
             sg.setEmail( s.getEmail() );
-            sg.setCuentaBancaria( s.getCuentaCorriente().getCuentaBancaria() );
-            sg.setPreferenciaPago(s.getPreferenciaPago());
-            sg.setPreferenciaTipoFactura(s.getPreferenciaTipoFactura());
             titularDto.add( sg );
         }
         return titularDto;
@@ -183,9 +157,29 @@ public class ServicioTitularImpl
         titularDetalleDto.setEmail( titular.getEmail() );
         titularDetalleDto.setInscripciones( convertirInscripcionesAInscripcionesDetalleDto( titular.getInscripcionesActivas() ) );
         titularDetalleDto.setFacturas( convertirFacturasAEstadoFacturasDto( titular.getCuentaCorriente() ) );
-        titularDetalleDto.setPreferenciaPago(titular.getPreferenciaPago());
-        titularDetalleDto.setPreferenciaTipoFactura(titular.getPreferenciaTipoFactura());
+        titularDetalleDto.setMetodoPago( convertirMedioPagoAMedioPagoDto( titular.getCuentaCorriente().getMetodoPago() ) );
         return titularDetalleDto;
+    }
+
+    private MetodoPagoDto convertirMedioPagoAMedioPagoDto( MetodoPago metodoPago )
+    {
+
+        if ( metodoPago instanceof TarjetaCredito )
+        {
+            TarjetaCreditoDto metodoPagoDto = new TarjetaCreditoDto();
+            metodoPagoDto.setDebitoAutomatico( metodoPago.getDebitoAutomatico() );
+            metodoPagoDto.setNroTarjeta(( (TarjetaCredito) metodoPago ).getNroTarjeta());
+            metodoPagoDto.setCodSeg( ( (TarjetaCredito) metodoPago ).getCodSeg() );
+            return metodoPagoDto;
+        }
+        else if ( metodoPago instanceof TransferenciaBancaria )
+        {
+            TransferenciaBancariaDto metodoPagoDto = new TransferenciaBancariaDto();
+            metodoPagoDto.setDebitoAutomatico( metodoPago.getDebitoAutomatico() );
+            metodoPagoDto.setCuentaBancaria( ( (TransferenciaBancaria) metodoPago ).getCuentaBancaria() );
+            return metodoPagoDto;
+        }
+        return null;
     }
 
     private List<EstadoFacturasDto> convertirFacturasAEstadoFacturasDto( CuentaCorriente cuentaCorriente )
@@ -251,29 +245,17 @@ public class ServicioTitularImpl
             throw new EntidadNoEncontradaException( "El titular no existe" );
         }
         Titular titular = titularOpt.get();
-        if(titular.getPreferenciaPago()=="banco"){
-        	try
-        	{
-        		informarEntidadBanco( titular, pagoDto );
-        	}
-        	catch ( JsonProcessingException e )
-        	{
-        		// TODO Auto-generated catch block
-        		e.printStackTrace();
-        	}
-        }else{
-        	try
-        	{
-        		informarEntidadTarjeta( titular, pagoDto);
-        	}
-        	catch ( JsonProcessingException e )
-        	{
-        		// TODO Auto-generated catch block
-        		e.printStackTrace();
-        	}
-        }
+        MetodoPago metodoPago = convertirMetodoPagoDtoAMetodoPago( pagoDto.getMetodoPago() );
         try
         {
+            if ( MetodoPagoRegla.esPagoConTransferencia( metodoPago ) )
+            {
+                pagoBanco.registrarPagoBanco( metodoPago, pagoDto );
+            }
+            else if ( MetodoPagoRegla.esPagoConTarjeta( metodoPago ) )
+            {
+                pagoTarjeta.registrarPagoTarjeta( metodoPago, pagoDto );
+            }
             titular.registrarPago( pagoDto.getFacturaId(), pagoDto.getFecha(), pagoDto.getMonto() );
             repositorioTitular.save( titular );
         }
@@ -281,74 +263,51 @@ public class ServicioTitularImpl
         {
             throw new EntidadNoEncontradaException( fne.getMessage() );
         }
-    }
-
-    private void informarEntidadTarjeta( Titular titular, PagoDto pagoDto ) throws JsonProcessingException
-    {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType( MediaType.APPLICATION_JSON );
-        HttpEntity<String> request;
-        request = new HttpEntity<String>(new ObjectMapper().writeValueAsString(crearObjetoTarjeta(titular,pagoDto)), headers);
-        ResponseEntity<String> response = restTemplate.exchange(
-                                                                urlTarjeta, HttpMethod.POST, request, String.class);
-        
-            
-
-    }
-
-    private RequestTarjeta crearObjetoTarjeta( Titular titular, PagoDto pagoDto )
-    {
-        RequestTarjeta request = new RequestTarjeta();
-        request.setNroTarjeta( "9345572142215307" );
-        request.setCodSeg("342");
-        request.setMonto(String.valueOf(pagoDto.getMonto()));
-        request.setIdEntidad("1");
-        request.setCuotas( "1" );
-        return request;
-    }
-
-    private void informarEntidadBanco( Titular titular, PagoDto pagoDto )
-        throws JsonProcessingException
-    {
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType( MediaType.APPLICATION_JSON );
-        String movimientos =
-            "[" + new ObjectMapper().writeValueAsString( crearObjetoMovimiento( titular.getCuentaCorriente().getCuentaBancaria(),
-                                                                                pagoDto ) )
-                            + "]";
-        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
-        params.set("movimientos",movimientos);
-        params.set("user","instituto");
-        params.set("origenMovimiento","debito");
-
-        UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(urlBanco).queryParams(params);
-        String url;
-        url = builder.build().toUri().toString();
-        try
+        catch ( PagoBancoException pbe )
         {
-            url = URLDecoder.decode(url, "UTF-8");
+            throw new ErrorPagoException( MensajeServicio.ERROR_PAGO_BANCO.getDescripcion() + pbe.getMessage() );
         }
-        catch ( UnsupportedEncodingException e )
+        catch ( PagoTarjetaException pbe )
         {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+            throw new ErrorPagoException( pbe.getMessage() );
         }
-
-        String response = restTemplate.postForObject( url,"",  String.class );
-        
-        if ( !response.equals( "Ok" ) )
+        catch ( JsonProcessingException jpe )
         {
-            throw new ErrorPagoException();
+            throw new ErrorPagoException( MensajeServicio.ERROR_PAGO.getDescripcion() );
         }
     }
 
-    private RequestBanco crearObjetoMovimiento( String cuentaBancaria, PagoDto pagoDto )
+    private MetodoPago convertirMetodoPagoDtoAMetodoPago( MetodoPagoDto metodoPago )
     {
-        RequestBanco request = new RequestBanco();
-        request.setCbuOrigen( "1230022000119" );
-        request.setCbuDestino( cbuEscuela );
-        request.setMonto( pagoDto.getMonto() );
-        request.setDescripcion( "Pago cuota" );
-        return request;
+        if ( metodoPago instanceof TransferenciaBancariaDto )
+        {
+            TransferenciaBancaria transferencia = new TransferenciaBancaria();
+            transferencia.setDebitoAutomatico( metodoPago.getDebitoAutomatico() );
+            transferencia.setCuentaBancaria( ( (TransferenciaBancariaDto) metodoPago ).getCuentaBancaria() );
+            return transferencia;
+        }
+        if ( metodoPago instanceof TarjetaCreditoDto )
+        {
+            TarjetaCredito tarjetaCredito = new TarjetaCredito();
+            tarjetaCredito.setDebitoAutomatico( metodoPago.getDebitoAutomatico() );
+            tarjetaCredito.setNroTarjeta( ( (TarjetaCreditoDto) metodoPago ).getNroTarjeta() );
+            tarjetaCredito.setCodSeg( ( (TarjetaCreditoDto) metodoPago ).getCodSeg() );
+            return tarjetaCredito;
+        }
+        throw new IllegalArgumentException( MensajeServicio.METODO_PAGO_INVALIDO.getDescripcion() );
     }
+
+    @Override
+    public void modificarMetodoDePago( Long id, MetodoPagoDto metodoPago )
+    {
+        Optional<Titular> titularOpt = repositorioTitular.findById( id );
+        if ( !titularOpt.isPresent() )
+        {
+            throw new EntidadNoEncontradaException( "El titular no existe" );
+        }
+        Titular titular = titularOpt.get();
+        titular.getCuentaCorriente().setMetodoPago( convertirMetodoPagoDtoAMetodoPago( metodoPago ) );
+        repositorioTitular.save( titular );
+    }
+
 }

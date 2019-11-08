@@ -24,5 +24,5 @@ public interface ServicioUsuario
 
     public void eliminarUsuario( Long id );
     
-    public void calcularSueldos();
+    public void liquidarSueldos();
 }

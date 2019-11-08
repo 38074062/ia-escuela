@@ -2,8 +2,8 @@ package ar.edu.uade.ia.escuela.presentacion.dto;
 
 public class TitularDto
 {
-	private Long id;
-	
+    private Long id;
+
     private Integer dni;
 
     private String nombre;
@@ -14,15 +14,7 @@ public class TitularDto
 
     private String email;
 
-    private String cuentaBancaria;
-    
-    private String nroTarjeta;
-    
-    private String codSeg;
-    
-    private String preferenciaTipoFactura;
-    
-    private String preferenciaPago;
+    private MetodoPagoDto metodoPago;
 
     public Integer getDni()
     {
@@ -74,55 +66,24 @@ public class TitularDto
         this.email = email;
     }
 
-    public String getCuentaBancaria()
+    public Long getId()
     {
-        return cuentaBancaria;
+        return id;
     }
 
-    public void setCuentaBancaria( String cuentaBancaria )
+    public void setId( Long id )
     {
-        this.cuentaBancaria = cuentaBancaria;
+        this.id = id;
     }
 
-	public Long getId() {
-		// TODO Auto-generated method stub
-		return id;
-	}
+    public MetodoPagoDto getMetodoPago()
+    {
+        return metodoPago;
+    }
 
-	public void setId(Long id) {
-		this.id = id;		
-	}
-	
-	public String getPreferenciaTipoFactura() {
-		return preferenciaTipoFactura;
-	}
-
-	public void setPreferenciaTipoFactura(String preferenciaTipoFactura) {
-		this.preferenciaTipoFactura = preferenciaTipoFactura;
-	}
-
-	public String getPreferenciaPago() {
-		return preferenciaPago;
-	}
-
-	public void setPreferenciaPago(String preferenciaPago) {
-		this.preferenciaPago = preferenciaPago;
-	}
-
-	public String getNroTarjeta() {
-		return nroTarjeta;
-	}
-
-	public void setNroTarjeta(String nroTarjeta) {
-		this.nroTarjeta = nroTarjeta;
-	}
-
-	public String getCodSeg() {
-		return codSeg;
-	}
-
-	public void setCodSeg(String codSeg) {
-		this.codSeg = codSeg;
-	}
+    public void setMetodoPago( MetodoPagoDto metodoPago )
+    {
+        this.metodoPago = metodoPago;
+    }
 
 }

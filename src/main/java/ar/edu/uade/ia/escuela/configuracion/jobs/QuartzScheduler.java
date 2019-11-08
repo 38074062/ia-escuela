@@ -16,6 +16,7 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import org.springframework.scheduling.quartz.SpringBeanJobFactory;
 
 import ar.edu.uade.ia.escuela.servicio.jobs.FacturacionJob;
+import ar.edu.uade.ia.escuela.servicio.jobs.LiquidacionSueldosJob;
 
 @Configuration
 @ConditionalOnExpression( "'${using.spring.schedulerFactory}'=='true'" )
@@ -57,6 +58,24 @@ public class QuartzScheduler
 
     @Bean
     public CronTriggerFactoryBean triggerJobFacturacion( @Qualifier( "FacturacionJob" ) JobDetail job )
+    {
+        CronTriggerFactoryBean trigger = new CronTriggerFactoryBean();
+        trigger.setJobDetail( job );
+        trigger.setCronExpression( CRON_MENSUAL );
+        return trigger;
+    }
+
+    @Bean( name = "LiquidacionSueldosJob" )
+    public JobDetailFactoryBean detalleJobLiquidacionSueldos()
+    {
+        JobDetailFactoryBean jobDetailFactory = new JobDetailFactoryBean();
+        jobDetailFactory.setJobClass( LiquidacionSueldosJob.class );
+        jobDetailFactory.setDurability( true );
+        return jobDetailFactory;
+    }
+
+    @Bean
+    public CronTriggerFactoryBean triggerJobLiquidacionSueldos( @Qualifier( "LiquidacionSueldosJob" ) JobDetail job )
     {
         CronTriggerFactoryBean trigger = new CronTriggerFactoryBean();
         trigger.setJobDetail( job );

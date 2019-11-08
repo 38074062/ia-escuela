@@ -16,6 +16,8 @@ public class RegistroUsuarioDto
 
     private Integer cargo;
 
+    private String cbu;
+
     public RegistroUsuarioDto()
     {
 
@@ -89,6 +91,16 @@ public class RegistroUsuarioDto
     public void setCargo( Integer cargo )
     {
         this.cargo = cargo;
+    }
+
+    public String getCbu()
+    {
+        return cbu;
+    }
+
+    public void setCbu( String cbu )
+    {
+        this.cbu = cbu;
     }
 
 }

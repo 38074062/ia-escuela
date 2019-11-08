@@ -15,14 +15,12 @@ public class TitularDetalleDto
     private String direccion;
 
     private String email;
-    
-    private String preferenciaTipoFactura;
-    
-    private String preferenciaPago;
 
     private List<InscripcionDetalleDto> inscripciones;
 
     private List<EstadoFacturasDto> facturas;
+    
+    private MetodoPagoDto metodoPago;
 
     public TitularDetalleDto()
     {
@@ -109,20 +107,16 @@ public class TitularDetalleDto
         this.facturas = facturas;
     }
 
-	public String getPreferenciaTipoFactura() {
-		return preferenciaTipoFactura;
-	}
+    public MetodoPagoDto getMetodoPago()
+    {
+        return metodoPago;
+    }
 
-	public void setPreferenciaTipoFactura(String preferenciaTipoFactura) {
-		this.preferenciaTipoFactura = preferenciaTipoFactura;
-	}
+    public void setMetodoPago( MetodoPagoDto metodoPago )
+    {
+        this.metodoPago = metodoPago;
+    }
 
-	public String getPreferenciaPago() {
-		return preferenciaPago;
-	}
 
-	public void setPreferenciaPago(String preferenciaPago) {
-		this.preferenciaPago = preferenciaPago;
-	}
     
 }

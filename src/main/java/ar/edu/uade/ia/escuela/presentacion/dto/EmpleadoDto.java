@@ -17,6 +17,8 @@ public class EmpleadoDto
 
     private String cargo;
 
+    private String cbu;
+
     public EmpleadoDto()
     {
         super();
@@ -90,6 +92,16 @@ public class EmpleadoDto
     public void setCargo( String cargo )
     {
         this.cargo = cargo;
+    }
+
+    public String getCbu()
+    {
+        return cbu;
+    }
+
+    public void setCbu( String cbu )
+    {
+        this.cbu = cbu;
     }
 
 }

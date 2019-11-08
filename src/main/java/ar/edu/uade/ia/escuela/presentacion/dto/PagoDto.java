@@ -12,6 +12,8 @@ public class PagoDto
 
     private LocalDate fecha;
 
+    private MetodoPagoDto metodoPago;
+
     public PagoDto()
     {
         super();
@@ -55,6 +57,16 @@ public class PagoDto
     public void setFecha( LocalDate fecha )
     {
         this.fecha = fecha;
+    }
+
+    public MetodoPagoDto getMetodoPago()
+    {
+        return metodoPago;
+    }
+
+    public void setMetodoPago( MetodoPagoDto metodoPago )
+    {
+        this.metodoPago = metodoPago;
     }
 
 }

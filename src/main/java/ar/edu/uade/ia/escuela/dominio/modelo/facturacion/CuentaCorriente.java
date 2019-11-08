@@ -19,13 +19,9 @@ public class CuentaCorriente
     @OneToMany( mappedBy = "cuentaCorriente", cascade = CascadeType.ALL )
     private List<ItemCuenta> itemsCuentas = new LinkedList<ItemCuenta>();
 
-    private String cuentaBancaria;
-    
-    private String nroTarjeta;
-    
-    private String codSeg;
+    private MetodoPago metodoPago;
 
-	public CuentaCorriente()
+    public CuentaCorriente()
     {
         super();
     }
@@ -52,32 +48,6 @@ public class CuentaCorriente
         item.setCuentaCorriente( this );
         this.itemsCuentas.add( item );
     }
-
-    public String getCuentaBancaria()
-    {
-        return cuentaBancaria;
-    }
-
-    public void setCuentaBancaria( String cuentaBancaria )
-    {
-        this.cuentaBancaria = cuentaBancaria;
-    }
-    
-    public String getNroTarjeta() {
-		return nroTarjeta;
-	}
-
-	public void setNroTarjeta(String nroTarjeta) {
-		this.nroTarjeta = nroTarjeta;
-	}
-	
-	public String getCodSeg() {
-		return codSeg;
-	}
-
-	public void setCodSeg(String codSeg) {
-		this.codSeg = codSeg;
-	}
 
     public float estadoCuenta()
     {
@@ -118,6 +88,16 @@ public class CuentaCorriente
             }
         }
         return null;
+    }
+
+    public MetodoPago getMetodoPago()
+    {
+        return metodoPago;
+    }
+
+    public void setMetodoPago( MetodoPago metodoPago )
+    {
+        this.metodoPago = metodoPago;
     }
 
 }

@@ -2,6 +2,7 @@ package ar.edu.uade.ia.escuela.dominio.modelo.empleados;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -40,6 +41,8 @@ public class Usuario
 
     @Enumerated( EnumType.STRING )
     private Cargo cargo;
+
+    private String cbu;
 
     public Usuario()
     {
@@ -149,4 +152,18 @@ public class Usuario
         this.cargo = cargo;
     }
 
+    public String getCbu()
+    {
+        return cbu;
+    }
+
+    public void setCbu( String cbu )
+    {
+        this.cbu = cbu;
+    }
+
+    public float calcularSueldo()
+    {
+        return recibos.stream().mapToDouble( Recibo::calcularTotal ).count();
+    }
 }
