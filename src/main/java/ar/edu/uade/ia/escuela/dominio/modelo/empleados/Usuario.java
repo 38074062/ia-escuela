@@ -2,7 +2,6 @@ package ar.edu.uade.ia.escuela.dominio.modelo.empleados;
 
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -164,6 +163,6 @@ public class Usuario
 
     public float calcularSueldo()
     {
-        return recibos.stream().mapToDouble( Recibo::calcularTotal ).count();
+        return (float) recibos.stream().mapToDouble( Recibo::calcularTotal ).sum();
     }
 }

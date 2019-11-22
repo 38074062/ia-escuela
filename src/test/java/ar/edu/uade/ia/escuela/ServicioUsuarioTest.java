@@ -37,7 +37,7 @@ public class ServicioUsuarioTest
         // Cuando
         servicio.registrarUsuario( usuarioDto );
         // Entonces
-        assertEquals( 2, servicio.getEmpleados().size() );
+        assertEquals( 1, servicio.getEmpleados().size() );
     }
 
     @Test
@@ -52,18 +52,20 @@ public class ServicioUsuarioTest
         usuarioDto.setDni( 12345678 );
         usuarioDto.setNombreUsuario( "jperez@uade.edu.ar" );
         usuarioDto.setCargo( 0 );
+        usuarioDto.setCbu("1230000000124");
         servicio.registrarUsuario( usuarioDto );
-        assertEquals( 2, servicio.getEmpleados().size() );
+        assertEquals( 1, servicio.getEmpleados().size() );
         ReciboDto reciboDto = new ReciboDto();
-        reciboDto.setIdEmpleado( servicio.getEmpleados().get( 1 ).getId() );
+        reciboDto.setIdEmpleado( servicio.getEmpleados().get( 0 ).getId() );
         reciboDto.setHaber( "Basico" );
         reciboDto.setPrecio( 40000L );
-        reciboDto.setDescuento( 3000L );
+        reciboDto.setDescuento( 0.20F );
         reciboDto.setHorario( "Lunes 16:00-18:00hs" );
         reciboDto.setHoras( 2 );
         // Cuando
         servicio.agregarCargaHoraria( reciboDto );
         // Entonces
+        servicio.liquidarSueldos();
     }
 
 }

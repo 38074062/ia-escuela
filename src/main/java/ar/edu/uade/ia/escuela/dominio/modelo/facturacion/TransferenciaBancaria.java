@@ -1,5 +1,8 @@
 package ar.edu.uade.ia.escuela.dominio.modelo.facturacion;
 
+import javax.persistence.Entity;
+
+@Entity
 public class TransferenciaBancaria extends MetodoPago
 {
 

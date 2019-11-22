@@ -22,6 +22,7 @@ import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
 import ar.edu.uade.ia.escuela.servicio.error.CargoInexistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
+import ar.edu.uade.ia.escuela.servicio.error.LiquidacionSueldosException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreDeUsuarioExistenteException;
 
 @RestController
@@ -116,6 +117,24 @@ public class ControladorUsuario
             respuesta.setMensaje( MensajePresentacion.USUARIO_MODIFICADO.getDescripcion() );
         }
         catch ( EntidadNoEncontradaException e )
+        {
+            respuesta.setEstado( false );
+            respuesta.setMensaje( e.getMessage() );
+        }
+        return respuesta;
+    }
+
+    @GetMapping( "/empleados/sueldos" )
+    public RespuestaApiDto<String> liquidarSueldos()
+    {
+        RespuestaApiDto<String> respuesta = new RespuestaApiDto<String>();
+        try
+        {
+            servicioUsuario.liquidarSueldos();
+            respuesta.setEstado( true );
+            respuesta.setMensaje( MensajePresentacion.SUELDOS_LIQUIDADOS.getDescripcion() );
+        }
+        catch ( LiquidacionSueldosException e )
         {
             respuesta.setEstado( false );
             respuesta.setMensaje( e.getMessage() );

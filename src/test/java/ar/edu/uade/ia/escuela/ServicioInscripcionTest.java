@@ -52,7 +52,6 @@ public class ServicioInscripcionTest
         titularDto.setDireccion("Lima 775");
         titularDto.setDni(12345678);
         titularDto.setEmail("jperez@uade.edu.ar");
-        titularDto.setCuentaBancaria("3120941931203");
         titular.altaTitular( titularDto );
         
         List<ServicioDto> servicios = servicio.listarServicios();

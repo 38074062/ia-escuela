@@ -20,8 +20,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-
 import ar.edu.uade.ia.escuela.datos.RepositorioRol;
 import ar.edu.uade.ia.escuela.datos.RepositorioUsuario;
 import ar.edu.uade.ia.escuela.dominio.modelo.empleados.Cargo;
@@ -36,10 +34,11 @@ import ar.edu.uade.ia.escuela.presentacion.dto.RegistroUsuarioDto;
 import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
 import ar.edu.uade.ia.escuela.servicio.cliente.banco.PagoBanco;
 import ar.edu.uade.ia.escuela.servicio.cliente.banco.PagoBancoException;
-import ar.edu.uade.ia.escuela.servicio.cliente.banco.RequestBanco;
+import ar.edu.uade.ia.escuela.servicio.cliente.banco.RequestBancoMovimiento;
 import ar.edu.uade.ia.escuela.servicio.error.CargoInexistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.DniExistenteException;
 import ar.edu.uade.ia.escuela.servicio.error.EntidadNoEncontradaException;
+import ar.edu.uade.ia.escuela.servicio.error.LiquidacionSueldosException;
 import ar.edu.uade.ia.escuela.servicio.error.NombreDeUsuarioExistenteException;
 
 @Service
@@ -48,7 +47,7 @@ public class ServicioUsuarioImpl
     implements ServicioUsuario
 {
     private static final String DEFAULT_PASSWORD = "1234";
-    
+
     private static final Logger LOG = Logger.getGlobal();
 
     @Autowired
@@ -268,10 +267,10 @@ public class ServicioUsuarioImpl
     @Override
     public void liquidarSueldos()
     {
-        List<RequestBanco> liquidaciones = new LinkedList<>();
-        List<Usuario> usuarios = repositorioUsuario.findAll();
+        List<RequestBancoMovimiento> liquidaciones = new LinkedList<>();
+        List<Usuario> usuarios = repositorioUsuario.findEmpleados();
         usuarios.stream().forEach( empleado -> {
-            RequestBanco requestBanco = new RequestBanco();
+            RequestBancoMovimiento requestBanco = new RequestBancoMovimiento();
             requestBanco.setCbuOrigen( cbuEscuela );
             requestBanco.setCbuDestino( empleado.getCbu() );
             requestBanco.setDescripcion( "Pago mes " + LocalDate.now().getMonth().getValue() );
@@ -280,15 +279,12 @@ public class ServicioUsuarioImpl
         } );
         try
         {
-            pagoBanco.registrarPagoSueldos(liquidaciones);
-        }
-        catch ( JsonProcessingException e )
-        {
-            LOG.severe( e.getMessage() );
+            pagoBanco.registrarPagos( liquidaciones );
         }
         catch ( PagoBancoException e )
         {
             LOG.severe( e.getMessage() );
+            throw new LiquidacionSueldosException( e.getMessage() );
         }
     }
 }

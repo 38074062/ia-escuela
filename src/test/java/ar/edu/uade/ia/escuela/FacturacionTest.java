@@ -63,7 +63,6 @@ public class FacturacionTest
         titularDto.setDireccion( "Lima 775" );
         titularDto.setDni( 12345678 );
         titularDto.setEmail( "jperez@uade.edu.ar" );
-        titularDto.setCuentaBancaria( "3120941931203s" );
         titular.altaTitular( titularDto );
 
         List<ServicioDto> servicios = servicio.listarServicios();
@@ -112,6 +111,5 @@ public class FacturacionTest
         titular.registrarPago( pago );
 
         assertEquals( "Facturada",
-                      titular.getTitular( titulares.get( 0 ).getId() ).getFacturas().get( 0 ).getEstado() );
-    }
+                      titular.getTitular( titulares.get( 0 ).getId() ).getFacturas().get( 0 ).getEstado() );    }
 }

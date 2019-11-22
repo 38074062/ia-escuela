@@ -11,7 +11,7 @@ public class Recibo
     extends EntidadBase
 {
     @ManyToOne
-    @JoinColumn(name="usuario_id", nullable=false)
+    @JoinColumn( name = "usuario_id", nullable = false )
     private Usuario usuario;
 
     private String haber;
@@ -93,7 +93,7 @@ public class Recibo
     {
         float total = 0;
         total = precio * horas;
-        total = total - total / descuento;
+        total = total - total * descuento;
         return total;
     }
 

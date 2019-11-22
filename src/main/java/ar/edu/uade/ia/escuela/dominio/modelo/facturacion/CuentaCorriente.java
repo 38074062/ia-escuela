@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import ar.edu.uade.ia.escuela.dominio.error.FacturaNoEncontradaException;
 import ar.edu.uade.ia.escuela.dominio.modelo.EntidadBase;
@@ -19,6 +20,7 @@ public class CuentaCorriente
     @OneToMany( mappedBy = "cuentaCorriente", cascade = CascadeType.ALL )
     private List<ItemCuenta> itemsCuentas = new LinkedList<ItemCuenta>();
 
+    @OneToOne(cascade = CascadeType.ALL, optional = false)
     private MetodoPago metodoPago;
 
     public CuentaCorriente()

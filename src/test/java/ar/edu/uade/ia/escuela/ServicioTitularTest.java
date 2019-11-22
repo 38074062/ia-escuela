@@ -32,14 +32,12 @@ public class ServicioTitularTest
         titularDto.setDireccion("Lima 775");
         titularDto.setDni(12345678);
         titularDto.setEmail("jperez@uade.edu.ar");
-        titularDto.setCuentaBancaria("3120941931203");
         TitularDto titularDto2 = new TitularDto();
         titularDto2.setNombre("Bruno");
         titularDto2.setApellido("Diaz");
         titularDto2.setDireccion("Mitre 1043");
         titularDto2.setDni(165854688);
         titularDto2.setEmail("batman@uade.edu.ar");
-        titularDto2.setCuentaBancaria("842536974155");
         
         // Cuando
         servicio.altaTitular( titularDto );

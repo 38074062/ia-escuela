@@ -2,57 +2,41 @@ package ar.edu.uade.ia.escuela.servicio.cliente.banco;
 
 public class RequestBanco
 {
-    private String cbuOrigen;
+    private String user;
 
-    private String cbuDestino;
+    private String origenMovimiento;
+    
+    private String movimientos;
 
-    private float monto;
-
-    private String descripcion;
-
-    public RequestBanco()
+    public String getUser()
     {
-        super();
+        return user;
     }
 
-    public String getCbuOrigen()
+    public void setUser( String user )
     {
-        return cbuOrigen;
+        this.user = user;
     }
 
-    public void setCbuOrigen( String cbuOrigen )
+    public String getOrigenMovimiento()
     {
-        this.cbuOrigen = cbuOrigen;
+        return origenMovimiento;
     }
 
-    public String getCbuDestino()
+    public void setOrigenMovimiento( String origenMovimiento )
     {
-        return cbuDestino;
+        this.origenMovimiento = origenMovimiento;
     }
 
-    public void setCbuDestino( String cbuDestino )
+    public String getMovimientos()
     {
-        this.cbuDestino = cbuDestino;
+        return movimientos;
     }
 
-    public float getMonto()
+    public void setMovimientos( String movimientos )
     {
-        return monto;
+        this.movimientos = movimientos;
     }
-
-    public void setMonto( float monto )
-    {
-        this.monto = monto;
-    }
-
-    public String getDescripcion()
-    {
-        return descripcion;
-    }
-
-    public void setDescripcion( String descripcion )
-    {
-        this.descripcion = descripcion;
-    }
-
+    
+    
 }

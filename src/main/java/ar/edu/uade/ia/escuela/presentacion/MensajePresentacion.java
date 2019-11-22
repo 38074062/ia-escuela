@@ -16,7 +16,8 @@ public enum MensajePresentacion
     TITULAR_BORRADO( "Titular eliminado exitosamente" ),
     TITULAR_MODIFICADO( "Titular modificado exitosamente" ),
     USUARIO_BORRADO( "Empleado eliminado exitosamente" ),
-    USUARIO_MODIFICADO( "Empleado modificado exitosamente" );
+    USUARIO_MODIFICADO( "Empleado modificado exitosamente" ),
+    SUELDOS_LIQUIDADOS( "La liquidación de sueldos fue exitosa" );
 
     private String descripcion;
 

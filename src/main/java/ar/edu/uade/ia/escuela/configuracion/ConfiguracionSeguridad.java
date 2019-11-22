@@ -29,14 +29,18 @@ public class ConfiguracionSeguridad extends WebSecurityConfigurerAdapter {
         // @formatter:off        			
         http.
         sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-				.cors().and()
-				.csrf().disable()
+                .cors().and()
+                .csrf().disable()
                 .authorizeRequests()
-				.anyRequest().permitAll().and()
-				.addFilterBefore(new FiltroAutenticacionJWT(authenticationManager()),
-						UsernamePasswordAuthenticationFilter.class)
+                    .antMatchers(HttpMethod.GET,"/").permitAll()
+                    .antMatchers(HttpMethod.POST, "/login").permitAll()
+                    .antMatchers(HttpMethod.POST, "/registrarse").permitAll()
+                    .antMatchers(HttpMethod.GET, "/cargos").permitAll()
+                    .antMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+                .anyRequest().authenticated().and()
+                .addFilterBefore(new FiltroAutenticacionJWT(authenticationManager()),
+                        UsernamePasswordAuthenticationFilter.class)
                 .addFilterBefore(filtroAutorizacionJWTBean(), UsernamePasswordAuthenticationFilter.class);
-                
         // @formatter:on
     }
 

@@ -5,7 +5,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import ar.edu.uade.ia.escuela.servicio.ServicioFactura;
 import ar.edu.uade.ia.escuela.servicio.ServicioUsuario;
 
 public class LiquidacionSueldosJob
